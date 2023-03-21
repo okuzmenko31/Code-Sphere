@@ -1,0 +1,11 @@
+__pycache__
+*.pyc
+.env
+.idea
+media
+venv/
+.vscode/
+*.log
+celerybeat-schedule.db
+celerybeat-schedule
+/static/
