@@ -9,3 +9,4 @@ venv/
 celerybeat-schedule.db
 celerybeat-schedule
 /static/
+TODO
