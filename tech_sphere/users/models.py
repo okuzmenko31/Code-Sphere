@@ -81,3 +81,37 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return f'{self.email}'
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User,
+                                on_delete=models.CASCADE,
+                                verbose_name='User',
+                                related_name='profile',
+                                )
+    avatar = models.ImageField(upload_to='images/user',
+                               verbose_name='Avatar',
+                               blank=True)
+    bio = models.TextField(max_length=700, verbose_name='Bio', blank=True)
+    country = models.CharField(max_length=150,
+                               verbose_name='Country',
+                               blank=True)
+    city = models.CharField(max_length=170,
+                            verbose_name='City',
+                            blank=True)
+    twitter = models.URLField(max_length=450,
+                              verbose_name='Twitter link',
+                              blank=True)
+    facebook = models.URLField(max_length=450,
+                               verbose_name='Facebook link',
+                               blank=True)
+    github = models.URLField(max_length=450,
+                             verbose_name='GitHub link',
+                             blank=True)
+
+    class Meta:
+        verbose_name = 'profile'
+        verbose_name_plural = 'Profiles'
+
+    def __str__(self):
+        return f'{self.user} profile'
