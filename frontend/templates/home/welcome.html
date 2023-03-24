@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block welcome-nav %}
+    {% include 'inc/welcome-navbar.html' %}
+{% endblock %}
+
+{% block welcome-header %}
+    <h1 class="header-title">Join IT Community</h1>
+    <h3 class="header-title-sec">Share knowledge</h3>
+    <p class="header-info">
+        Delve into IT and make it better, <br>
+        improve your knowledge and help others</p>
+
+    <div class="join d-flex">
+        <a href="" class="btn btn-success rounded-pill" style="height: 40px">Join IT community and Share</a>
+        <p class="wrapper-text ms-3">Share your knowledge with others,
+            ask questions,<br> read news, make posts
+            and much more on Code Sphere.</p>
+    </div>
+
+
+{% endblock %}
+
+{% block welcome-first-card %}
+
+    <div class="col-md-6 col-12 fs-5 py-5">
+        <i class="bi bi-file-earmark-post"></i>
+        <h3 class="card-text mt-3">Make posts</h3>
+        <p class="card-full-text mt-3 fs-4">
+            You can make post on any topic which related with IT and you
+            can tell others something useful. After publishing post it
+            won't be available to others until the administration approves its publication.
+        </p>
+    </div>
+
+    <div class="col-md-6 col-12">
+        <img src="{% static 'img/white-background.jpg' %}" class="card-image" alt="Make posts">
+    </div>
+
+{% endblock %}
+
+{% block welcome-sec-2-cards %}
+
+    <div class="col-md-5 col-12 text-white ps-5 py-5 pe-2 text-white card-header">
+        <i class="bi bi-patch-question"></i>
+        <h3 class="card-text mt-3">Ask and answer questions</h3>
+        <p class="card-full-text mt-3 fs-4">You can ask questions to other users or answer other questions.
+            When you are creating your question, you need to choose 1 or more tags.</p>
+        <img src="{% static 'img/white-background.jpg' %}" alt="Aks questions" class="card-image mt-5"
+             style="width: 400px">
+    </div>
+
+    <div class="col-md-7 col-12 pe-0 mt-md-0 mt-4 ps-md-0 ps-1">
+        <div class="ms-md-3 md-0 text-white ps-5 py-5 pe-22 text-white card-header" style="height: 100%">
+
+        </div>
+    </div>
+
+{% endblock %}

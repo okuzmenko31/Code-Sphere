@@ -1,0 +1,164 @@
+body {
+    font-family: 'Open Sans', "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+
+h1, h2, h3, h4, h6 {
+    font-weight: 700;
+}
+
+
+header {
+    margin-bottom: 60px;
+}
+
+
+header .menu .logo {
+    margin-top: 10px;
+}
+
+header .menu {
+    min-height: 100px;
+}
+
+header .header-title {
+    margin-top: 170px;
+    font-size: 6em;
+    background: -webkit-linear-gradient(90deg, #8524b6, #c055ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.header-wrapper {
+    background-color: #0b1c50;
+    /*background: url("https://uploads-ssl.webflow.com/62e3ee10882dc50bcae8d07a/631a5d4631d4c55a475f3e34_noise-50.png"),*/
+linear-gradient(#7d1ad3, #437cd9);
+}
+
+header .header-title-sec {
+    font-size: 4em;
+    color: #ffffff;
+    font-weight: 500;
+}
+
+header .header-info {
+    font-size: 1.8rem;
+    color: #ffffff;
+    margin-top: 3rem;
+}
+
+header .join {
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.wrapper {
+    max-width: 1200px;
+    margin: auto;
+}
+
+header .wrapper .join {
+    margin-top: 50px;
+}
+
+header .wrapper .wrapper-text {
+    margin-top: -3px;
+    color: #8524b6;
+    max-width: 425px;
+    text-align: left;
+}
+
+
+.wrapper .btn {
+    background: linear-gradient(50deg, #8524b6, #c055ff);
+    border: none !important;
+}
+
+.wrapper .btn:before {
+    background: linear-gradient(50deg, #8524b6, #c055ff);
+    border: none !important;
+    transition: all 13s ease !important;
+}
+
+.wrapper .btn:hover {
+    transition: 3s !important;
+    background: linear-gradient(50deg, #5a1a7a, #6f1c9d)
+}
+
+.bold-text {
+    font-weight: 700 !important;
+}
+
+.navbar .nav-brand-text {
+    color: #ffffff;
+    font-size: 21px;
+}
+
+.justify-content-end {
+    justify-content: flex-end !important;
+}
+
+.text-white {
+    color: #ffffff !important;
+}
+
+header .card-header {
+    border-radius: 20px;
+    border: 1px solid #c055ff;
+    overflow: hidden;
+}
+
+.card-header .card-image {
+    margin-top: 100px;
+    padding: 0.3rem;
+    width: 600px;
+    border-radius: 15px;
+    background: linear-gradient(to right, #2049bd, #C055FFFF);
+}
+
+
+header .card-header .bi {
+    border-radius: 10px;
+    font-size: 2.5rem;
+    background-color: #8524b6;
+    padding: 2px 2px 2px 2px;
+}
+
+.fs-5 {
+    padding-left: 3rem !important;
+}
+
+.py-5 {
+    padding-top: 3rem !important;
+    padding-bottom: 3rem !important;
+}
+
+.pe-2 {
+    padding-right: 0.5rem !important;
+}
+
+.ps-md-0 {
+    padding-left: 0 !important;
+}
+
+.ms-md-3 {
+    margin-left: 1rem !important;
+}
+
+.row .card-header {
+    border-radius: 20px;
+    border: 1px solid #c055ff;
+    overflow: hidden;
+}
+
+.pe-0 {
+    padding-right: 0 !important;
+}
+
+.pb-5 {
+    padding-bottom: 3rem !important;
+}
+
+.card-header .card-full-text {
+    font-size: 1.25rem !important;
+}
