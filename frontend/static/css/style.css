@@ -117,11 +117,11 @@ header .card-header {
 }
 
 
-header .card-header .bi {
+.bi {
     border-radius: 10px;
     font-size: 2.5rem;
     background-color: #8524b6;
-    padding: 2px 2px 2px 2px;
+    padding: 2px 7px 2px 7px;
 }
 
 .fs-5 {
@@ -134,7 +134,7 @@ header .card-header .bi {
 }
 
 .pe-2 {
-    padding-right: 0.5rem !important;
+    padding-right: 2rem !important;
 }
 
 .ps-md-0 {
