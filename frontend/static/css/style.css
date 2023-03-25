@@ -4,7 +4,7 @@ body {
 
 
 h1, h2, h3, h4, h6 {
-    font-weight: 700;
+    font-weight: 700 !important;
 }
 
 
@@ -162,3 +162,17 @@ header .card-header {
 .card-header .card-full-text {
     font-size: 1.25rem !important;
 }
+
+.content-wrapper {
+    width: 100%;
+    border-bottom: 1px solid #c2c2c2;
+}
+
+.fs-6 {
+    font-size: 1rem !important;
+}
+
+.justify-content-start {
+    justify-content: start;
+}
+
