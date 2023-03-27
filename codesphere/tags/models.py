@@ -16,7 +16,9 @@ class Tags(models.Model):
     icon = models.ImageField(upload_to='images/tags/',
                              verbose_name='Tag icon',
                              blank=True)
-    slug = models.SlugField(unique=True, verbose_name='Tag slug')
+    slug = models.SlugField(unique=True,
+                            verbose_name='Tag slug',
+                            blank=True)
 
     class Meta:
         verbose_name = 'tag'
