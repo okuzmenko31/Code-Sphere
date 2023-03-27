@@ -30,7 +30,7 @@ class Tags(models.Model):
 
     def save(self, *args, **kwargs):
         """Saving tag slug as slugify tag name"""
-        self.slug = slugify(self.name)
+        self.slug = slugify(self.name.replace('+', '_plus'))
         super(Tags, self).save(*args, **kwargs)
 
 
@@ -42,7 +42,8 @@ class TagSubscribers(models.Model):
                              verbose_name='Subscriber')
     tag = models.ForeignKey(Tags,
                             on_delete=models.CASCADE,
-                            verbose_name='Tag')
+                            verbose_name='Tag',
+                            related_name='tag_subs')
 
     class Meta:
         verbose_name = 'subscriber'

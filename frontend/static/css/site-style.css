@@ -31,9 +31,7 @@ h1, h2, h3, h4, h6 {
 }
 
 .cont {
-    padding-left: 2rem;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
+    padding: 1rem 2rem 1rem 2rem;
 }
 
 
@@ -56,4 +54,29 @@ h1, h2, h3, h4, h6 {
 .nav-link a:hover {
     color: #7600ff !important;
 }
+
+.tag {
+    padding-top: 20px;
+    text-align: center;
+    margin-bottom: 35px;
+    border: 1px solid #eee;
+}
+
+.tag a {
+    color: #7600ff !important;
+}
+
+.tag .tag-subs {
+    color: white !important;
+    border-radius: 7px;
+    background: linear-gradient(10deg, #8524b6, #c055ff);
+    margin-bottom: 15px;
+
+}
+
+.tag .tag-subs:hover {
+    background: linear-gradient(50deg, #5a1a7a, #6f1c9d)
+}
+
+
 
