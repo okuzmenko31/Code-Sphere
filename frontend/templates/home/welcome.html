@@ -1,161 +1,167 @@
-{% extends 'base.html' %}
+{% extends 'welcome-base.html' %}
 {% load static %}
 
-{% block welcome-nav %}
-    {% include 'inc/welcome-navbar.html' %}
-{% endblock %}
+{% block welcome-page %}
 
-{% block welcome-header %}
-    <h1 class="header-title">Join IT Community</h1>
-    <h3 class="header-title-sec">Share knowledge</h3>
-    <p class="header-info">
-        Delve into IT and make it better, <br>
-        improve your knowledge and help others</p>
+    {% block welcome-nav %}
+        {% include 'inc/welcome-navbar.html' %}
+    {% endblock %}
 
-    <div class="join d-flex">
-        <a href="" class="btn btn-success rounded-pill" style="height: 40px">Join IT community and Share</a>
-        <p class="wrapper-text ms-3">Share your knowledge with others,
-            ask questions,<br> read news, make posts
-            and much more on Code Sphere.</p>
-    </div>
+    {% block welcome-header %}
+        <h1 class="header-title">Join IT Community</h1>
+        <h3 class="header-title-sec">Share knowledge</h3>
+        <p class="header-info">
+            Delve into IT and make it better, <br>
+            improve your knowledge and help others</p>
 
-
-{% endblock %}
-
-{% block welcome-first-card %}
-
-    <div class="col-md-6 col-12 fs-5 py-5">
-        <i class="bi bi-file-earmark-post"></i>
-        <h3 class="card-text mt-3">Make posts</h3>
-        <p class="card-full-text mt-3 fs-4">
-            You can make post on any topic which related with IT and you
-            can tell others something useful. After publishing post it
-            won't be available to others until the administration approves its publication.
-        </p>
-    </div>
-
-    <div class="col-md-6 col-12">
-        <img src="{% static 'img/white-background.jpg' %}" class="card-image" alt="Make posts" style="width: 530px">
-    </div>
-
-{% endblock %}
-
-{% block welcome-sec-2-cards %}
-
-    <div class="col-md-5 col-12 text-white ps-5 py-5 pe-2 text-white card-header">
-        <i class="bi bi-patch-question"></i>
-        <h3 class="card-text mt-3">Ask and answer questions</h3>
-        <p class="card-full-text mt-3 fs-4">You can ask questions to other users or answer other questions.
-            When you are creating your question, you need to choose 1 or more tags.</p>
-        <img src="{% static 'img/white-background.jpg' %}" alt="Aks questions" class="card-image mt-5"
-             style="width: 400px; margin-bottom: 30px">
-
-        <i class="bi bi-cursor-text"></i>
-        <h3 class="card-text mt-3">Create your own blog</h3>
-        <p class="card-full-text mt-3 fs-4">You can create your own blog where you can make posts.
-            Share your success with others or share your knowledge.
-            Attract attention to yourself by creating posts on interesting topics related with IT.
-        </p>
-        <img src="{% static 'img/white-background.jpg' %}" alt="Aks questions" class="card-image mt-5"
-             style="width: 400px; margin-bottom: 30px">
+        <div class="join d-flex">
+            <a href="" class="btn btn-success rounded-pill" style="height: 40px">Join IT community and Share</a>
+            <p class="wrapper-text ms-3">Share your knowledge with others,
+                ask questions,<br> read news, make posts
+                and much more on Code Sphere.</p>
+        </div>
 
 
-    </div>
+    {% endblock %}
 
-    <div class="col-md-7 col-12 pe-0 mt-md-0 mt-4 ps-md-0 ps-1">
-        <div class="ms-md-3 md-0 text-white ps-5 py-5 pe-2 text-white card-header" style="height: 100%">
-            <i class="bi bi-newspaper"></i>
-            <h3 class="card-text mt-3">News</h3>
-            <p class="card-full-text mt-3 fs-4" style="margin-bottom: 70px">Stay up to date with all the news from IT.
-                Stop reading boring news about politics or something else, develop yourself and find out news about IT
-                one of the first on Code Sphere.
+    {% block welcome-first-card %}
+
+        <div class="col-md-6 col-12 fs-5 py-5">
+            <i class="bi bi-file-earmark-post"></i>
+            <h3 class="card-text mt-3">Make posts</h3>
+            <p class="card-full-text mt-3 fs-4">
+                You can make post on any topic which related with IT and you
+                can tell others something useful. After publishing post it
+                won't be available to others until the administration approves its publication.
             </p>
+        </div>
 
-            <i class="bi bi-person-video"></i>
-            <h3 class="card-text mt-3">Recommended webinars</h3>
-            <p class="card-full-text mt-3 fs-4" style="margin-bottom: 70px">Watch the recommended webinars, you are
-                guaranteed to improve your
-                skills and knowledge. Search for a webinar by its tag. You can be sure that Code Sphere recommends
-                only quality webinars from real professionals.
-            </p>
+        <div class="col-md-6 col-12">
+            <img src="{% static 'img/white-background.jpg' %}" class="card-image" alt="Make posts" style="width: 530px">
+        </div>
 
-            <i class="bi bi-binoculars"></i>
-            <h3 class="card-text mt-3">Job hunting</h3>
-            <p class="card-full-text mt-3 fs-4" style="margin-bottom: 70px">You can look for a job at the Code Sphere.
-                Apply for
-                vacancies that suit to you and your knowledge.
-            </p>
+    {% endblock %}
 
-            <i class="bi bi-eyeglasses"></i>
-            <h3 class="card-text mt-3">Look for an employee</h3>
-            <p class="card-full-text mt-3 fs-4" style="margin-top: 70px">If you are HR you can register HR account and
-                post
-                vacancies. Check all replies to your vacancy in your HR account profile.
+    {% block welcome-sec-2-cards %}
+
+        <div class="col-md-5 col-12 text-white ps-5 py-5 pe-2 text-white card-header">
+            <i class="bi bi-patch-question"></i>
+            <h3 class="card-text mt-3">Ask and answer questions</h3>
+            <p class="card-full-text mt-3 fs-4">You can ask questions to other users or answer other questions.
+                When you are creating your question, you need to choose 1 or more tags.</p>
+            <img src="{% static 'img/white-background.jpg' %}" alt="Aks questions" class="card-image mt-5"
+                 style="width: 400px; margin-bottom: 30px">
+
+            <i class="bi bi-cursor-text"></i>
+            <h3 class="card-text mt-3">Create your own blog</h3>
+            <p class="card-full-text mt-3 fs-4">You can create your own blog where you can make posts.
+                Share your success with others or share your knowledge.
+                Attract attention to yourself by creating posts on interesting topics related with IT.
             </p>
+            <img src="{% static 'img/white-background.jpg' %}" alt="Aks questions" class="card-image mt-5"
+                 style="width: 400px; margin-bottom: 30px">
+
 
         </div>
-    </div>
+
+        <div class="col-md-7 col-12 pe-0 mt-md-0 mt-4 ps-md-0 ps-1">
+            <div class="ms-md-3 md-0 text-white ps-5 py-5 pe-2 text-white card-header" style="height: 100%">
+                <i class="bi bi-newspaper"></i>
+                <h3 class="card-text mt-3">News</h3>
+                <p class="card-full-text mt-3 fs-4" style="margin-bottom: 70px">Stay up to date with all the news from
+                    IT.
+                    Stop reading boring news about politics or something else, develop yourself and find out news about
+                    IT
+                    one of the first on Code Sphere.
+                </p>
+
+                <i class="bi bi-person-video"></i>
+                <h3 class="card-text mt-3">Recommended webinars</h3>
+                <p class="card-full-text mt-3 fs-4" style="margin-bottom: 70px">Watch the recommended webinars, you are
+                    guaranteed to improve your
+                    skills and knowledge. Search for a webinar by its tag. You can be sure that Code Sphere recommends
+                    only quality webinars from real professionals.
+                </p>
+
+                <i class="bi bi-binoculars"></i>
+                <h3 class="card-text mt-3">Job hunting</h3>
+                <p class="card-full-text mt-3 fs-4" style="margin-bottom: 70px">You can look for a job at the Code
+                    Sphere.
+                    Apply for
+                    vacancies that suit to you and your knowledge.
+                </p>
+
+                <i class="bi bi-eyeglasses"></i>
+                <h3 class="card-text mt-3">Look for an employee</h3>
+                <p class="card-full-text mt-3 fs-4" style="margin-top: 70px">If you are HR you can register HR account
+                    and
+                    post
+                    vacancies. Check all replies to your vacancy in your HR account profile.
+                </p>
+
+            </div>
+        </div>
+
+    {% endblock %}
+
+    {% block trending-news-title %}
+        <div class="row mt-5">
+            <div class="col d-flex justify-content-start">
+                <i class="bi bi-graph-up-arrow" style="background: none; font-size: 1rem"></i>
+                <span class="ms-2 fs-6 fw-bold text-uppercase">Popular news</span>
+            </div>
+        </div>
+    {% endblock %}
+
+
+    {% block trending-news-content %}
+        <div class="col-md-4">
+            <div class="row">
+
+                <div class="col-md-2">
+                    <h1>1</h1>
+                </div>
+
+                <div class="col-md-12">
+                    <h1>Some text</h1>
+                </div>
+
+                <div class="col-md-2">
+                    <h1>2</h1>
+                </div>
+
+                <div class="col-md-12">
+                    <h1>Some text</h1>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="row">
+
+                <div class="col-md-2">
+                    <h1>1</h1>
+                </div>
+
+                <div class="col-md-12">
+                    <h1>Some text</h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="row">
+
+                <div class="col-md-2">
+                    <h1>1</h1>
+                </div>
+
+                <div class="col-md-12">
+                    <h1>Some text</h1>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
 
 {% endblock %}
-
-{% block trending-news-title %}
-    <div class="row mt-5">
-        <div class="col d-flex justify-content-start">
-            <i class="bi bi-graph-up-arrow" style="background: none; font-size: 1rem"></i>
-            <span class="ms-2 fs-6 fw-bold text-uppercase">Popular news</span>
-        </div>
-    </div>
-{% endblock %}
-
-
-{% block trending-news-content %}
-    <div class="col-md-4">
-        <div class="row">
-
-            <div class="col-md-2">
-                <h1>1</h1>
-            </div>
-
-            <div class="col-md-12">
-                <h1>Some text</h1>
-            </div>
-
-            <div class="col-md-2">
-                <h1>2</h1>
-            </div>
-
-            <div class="col-md-12">
-                <h1>Some text</h1>
-            </div>
-
-        </div>
-    </div>
-
-    <div class="col-md-4">
-        <div class="row">
-
-            <div class="col-md-2">
-                <h1>1</h1>
-            </div>
-
-            <div class="col-md-12">
-                <h1>Some text</h1>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-4">
-        <div class="row">
-
-            <div class="col-md-2">
-                <h1>1</h1>
-            </div>
-
-            <div class="col-md-12">
-                <h1>Some text</h1>
-            </div>
-        </div>
-    </div>
-{% endblock %}
-
-

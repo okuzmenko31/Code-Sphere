@@ -6,3 +6,7 @@ class WelcomePage(View):
 
     def get(self, *args, **kwargs):
         return render(self.request, 'home/welcome.html')
+
+
+def test_view(request):
+    return render(request, 'home/test.html')
