@@ -1,6 +1,10 @@
 {% extends 'site-base.html' %}
 {% load static %}
 
+{% block title %}
+    All tags
+{% endblock %}
+
 {% block top-site-nav %}
     {% include 'inc/top-site-nav.html' %}
 {% endblock %}
@@ -30,7 +34,7 @@
                         <a href="" class="nav-link fw-bold fs-6">Recommended webinars</a>
                     </li>
                     <li class="nav-item">
-                        <a href="" class="nav-link fw-bold fs-6 item-active">Tags</a>
+                        <a href="{% url 'all-tags' %}" class="nav-link fw-bold fs-6 item-active">Tags</a>
                     </li>
                 </ul>
             </div>
@@ -53,16 +57,13 @@
 
                     <ul class="nav nav-underline">
                         <li class="nav-item" style="color: #818181 !important">
-                            <a class="nav-link fw-bold" aria-current="page" href="#">Active</a>
+                            <a class="nav-link fw-bold" aria-current="page" href="#">Tags i follow</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link fw-bold" href="#">Link</a>
+                            <a class="nav-link fw-bold" href="#">Most popular tags</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link fw-bold" href="#">Link</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link fw-bold">Disabled</a>
+                            <a class="nav-link fw-bold" href="#">Create tag</a>
                         </li>
                     </ul>
 
