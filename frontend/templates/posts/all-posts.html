@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-    All tags
+    All posts
 {% endblock %}
 
 {% block top-site-nav %}
@@ -16,7 +16,7 @@
          margin: auto;">
                 <ul class="nav">
                     <li class="nav-item">
-                        <a href="{% url 'all-posts' %}" class="nav-link fw-bold fs-6">Posts</a>
+                        <a href="" class="nav-link fw-bold fs-6 item-active">Posts</a>
                     </li>
                     <li class="nav-item">
                         <a href="" class="nav-link fw-bold fs-6">Blogs</a>
@@ -34,7 +34,7 @@
                         <a href="" class="nav-link fw-bold fs-6">Recommended webinars</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{% url 'all-tags' %}" class="nav-link fw-bold fs-6 item-active">Tags</a>
+                        <a href="{% url 'all-tags' %}" class="nav-link fw-bold fs-6">Tags</a>
                     </li>
                 </ul>
             </div>
@@ -49,7 +49,16 @@
 
             <div class="col-md-12" style="background-color: #fff">
                 <div class="cont-name ms-md-4">
-                    <h3>All Tags</h3>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <h3>All Posts</h3>
+                        </div>
+                        <div class="col-md-10">
+                            <a href="" class="fw-bold btn create-post">Create post <i class="bi bi-pencil-square"></i> </a>
+                        </div>
+
+                    </div>
+
 
                 </div>
 
@@ -57,17 +66,13 @@
 
                     <ul class="nav nav-underline">
                         <li class="nav-item" style="color: #818181 !important">
-                            <a class="nav-link fw-bold item-active" aria-current="page" href="{% url 'all-tags' %}">All
-                                tags</a>
-                        </li>
-                        <li class="nav-item" style="color: #818181 !important">
-                            <a class="nav-link fw-bold" aria-current="page" href="#">Tags i follow</a>
+                            <a class="nav-link fw-bold item-active" aria-current="page" href="#">All posts</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link fw-bold" href="#">Most popular tags</a>
+                            <a class="nav-link fw-bold" href="#">Most popular posts</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link fw-bold" href="#">Create tag</a>
+                            <a class="nav-link fw-bold" href="#">Liked posts</a>
                         </li>
                     </ul>
 
@@ -78,20 +83,7 @@
             <div class="cont" style="background-color: #fff; margin-top: 15px">
 
                 <div class="row">
-                    {% for tag in tags %}
-                        <div class="col-md-3 tag">
-                            {% if tag.icon %}
-                                <img src="{{ tag.icon.url }}" alt="{{ tag.name }} icon" width="50">
-                            {% endif %}
-                            <p class="tag-name fw-bold" style="padding-top: 10px">{{ tag.name }}</p>
-                            <p class="tag-quests fw-bold"
-                               style="padding-top: 10px;
-                                border-top: 1px solid #eee">
-                                <a href="">Questions: 5673</a></p>
-                            <a href="{% url 'tag-subscribe' tag.id %}" class="tag-subs fw-bold btn">Subscribe
-                                | {{ tag.tag_subs.count }}</a>
-                        </div>
-                    {% endfor %}
+                    <!--Here will be posts main content-->
                 </div>
 
 
