@@ -150,7 +150,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'users.User'
 
+# EMAIL SETTINGS
+
+EMAIL_HOST = os.getenv('EMAIL_HOST')
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = os.getenv('EMAIL_PORT')
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS')
+
 # MDEDITOR OPTIONS
+
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 MDEDITOR_CONFIGS = {
@@ -181,4 +190,41 @@ MDEDITOR_CONFIGS = {
         'language': 'en'
     }
 
+}
+
+# ALLAUTH SOCIAL SETTINGS
+
+SOCIALACCOUNT_ADAPTER = "users.adapter.CustomSocialAdapter"
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = "http"
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = "email"
+SOCIALACCOUNT_LOGIN_ON_GET = True
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 10
+ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
+ACCOUNT_USERNAME_MIN_LENGTH = 3
+SOCIALACCOUNT_EMAIL_VERIFICATION = False
+SOCIALACCOUNT_PROVIDERS = {
+
+    "github": {
+        "APP": {
+            "client_id": '',
+            "secret": '',
+            "SCOPE": ["email"],
+        }
+    },
+    "google": {
+        # CLIENT_ID and SECRET provieds via admin site.
+        "SCOPE": [
+            "email",
+        ],
+        "AUTH_PARAMS": {
+            "access_type": "online",
+        },
+        "OAUTH_PKCE_ENABLED": True,
+    },
 }

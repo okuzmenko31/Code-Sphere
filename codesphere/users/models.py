@@ -6,7 +6,7 @@ from .services import get_clean_email
 
 
 class UserManager(BaseUserManager):
-    def _generate_username(self, email):
+    def generate_username(self, email):
         """
         Generates unique username based on 'email' field.
         """
