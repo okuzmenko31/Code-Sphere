@@ -19,6 +19,7 @@
     <div class="navbar-menu" style="background-color: #fff">
         {% block top-site-nav %}{% endblock %}
         {% block site-nav %}{% endblock %}
+        {% include 'users/sign-up-email-send.html' %}
     </div>
     <div class="site-wrapper" style="margin-top: 15px">
         {% block site-content %}{% endblock %}

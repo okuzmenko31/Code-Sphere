@@ -3,7 +3,7 @@ body {
     background-color: #f0f0f0;
 }
 
-h1, h2, h3, h4, h6 {
+h1, h2, h3, h4, h5, h6 {
     font-weight: 700 !important;
 }
 
@@ -86,6 +86,10 @@ h1, h2, h3, h4, h6 {
 .create-btn {
     color: #ffffff;
     background: linear-gradient(10deg, #8524b6, #c055ff);
+}
+
+.text-center {
+    text-align: center !important;
 }
 
 

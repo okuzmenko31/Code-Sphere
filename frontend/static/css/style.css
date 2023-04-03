@@ -172,10 +172,25 @@ header .card-header {
     font-size: 1rem !important;
 }
 
+.fs-3 {
+    font-size: 1.2rem !important;
+}
+
 .justify-content-start {
     justify-content: start;
 }
 
+.modal-header {
+    border-bottom: none !important;
+}
+
+.text-center {
+    text-align: center !important;
+}
+
+.pb-2 {
+    padding-bottom: 1.5rem !important;
+}
 
 
 

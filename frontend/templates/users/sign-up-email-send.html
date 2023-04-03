@@ -1,0 +1,43 @@
+<!-- Modal -->
+<div class="modal fade" id="SignUpEmailModal" tabindex="-1" aria-labelledby="SignUpEmailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <div class="container-fluid mb-5" style="max-width: 300px">
+                    <div class="row">
+                        <div class="success-message" style="color: #8ff352; margin-bottom: 30px">
+
+                        </div>
+                        <form action="{% url 'submit_email_signup' %}" method="post" class="submit_email_signup"
+                              novalidate>
+                            <h3 class="text-center mt-3 pb-2">Registration by email</h3>
+                            <p class="text-center pb-5 fs-3">Write your email and create an account</p>
+                            {% csrf_token %}
+                            {{ signup_form.non_field_errors }}
+
+                            <div class="form-group">
+                                {{ signup_form.email }}
+                                <div class="invalid-feedback" id="invalid-feedback" style="display: block">
+
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-success rounded-pill mt-5" style="width: 100%; margin-top: -30px">
+                                Continue
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $(#SignUpEmailModal).show()
+    })
+</script>
