@@ -16,6 +16,9 @@ function SignUpForm() {
             success: function (response) {
                 var success_message = response.message
                 $('.success-message').text(success_message)
+                $('form.submit_email_signup .success-message').each((index, el) => {
+                    $(el).remove()
+                })
                 $('form.submit_email_signup .invalid-feedback').each((index, el) => {
                     $(el).remove()
                 })

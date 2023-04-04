@@ -2,7 +2,7 @@ from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
 from django.utils import timezone
-from .services import get_clean_email
+from .services import get_clean_email, generate_token
 
 
 class UserManager(BaseUserManager):
@@ -115,3 +115,39 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return f'{self.user} profile'
+
+
+class Token(models.Model):
+    TOKEN_TYPES = (
+        ('su', 'Sign Up Token'),
+        ('ce', 'Change Email Token'),
+        ('pr', 'Password Reset Token')
+    )
+    token = models.CharField(max_length=32,
+                             verbose_name='Token',
+                             unique=True)
+    token_type = models.CharField(max_length=2,
+                                  verbose_name='Type of token',
+                                  choices=TOKEN_TYPES,
+                                  blank=True,
+                                  null=True)
+    owner_email = models.EmailField(unique=True,
+                                    verbose_name='Owner of token',
+                                    blank=True,
+                                    null=True)
+    created = models.DateTimeField(auto_now_add=True,
+                                   verbose_name='Token creation date')
+    deletion_date = models.DateTimeField(blank=True,
+                                         null=True,
+                                         verbose_name='Token deletion date')
+
+    class Meta:
+        verbose_name = 'token'
+        verbose_name_plural = 'Tokens'
+
+    def __str__(self):
+        return f'{self.token}, {self.token_type}'
+
+    def save(self, *args, **kwargs):
+        self.token = generate_token()
+        super().save(*args, **kwargs)
