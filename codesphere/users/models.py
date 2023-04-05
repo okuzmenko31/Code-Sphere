@@ -1,3 +1,5 @@
+import datetime
+
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
@@ -125,7 +127,8 @@ class Token(models.Model):
     )
     token = models.CharField(max_length=32,
                              verbose_name='Token',
-                             unique=True)
+                             unique=True,
+                             blank=True)
     token_type = models.CharField(max_length=2,
                                   verbose_name='Type of token',
                                   choices=TOKEN_TYPES,
@@ -137,9 +140,6 @@ class Token(models.Model):
                                     null=True)
     created = models.DateTimeField(auto_now_add=True,
                                    verbose_name='Token creation date')
-    deletion_date = models.DateTimeField(blank=True,
-                                         null=True,
-                                         verbose_name='Token deletion date')
 
     class Meta:
         verbose_name = 'token'

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User, UserProfile
+from .models import User, UserProfile, Token
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
 
@@ -35,3 +35,6 @@ class UserProfileAdmin(admin.ModelAdmin):
     list_editable = ['user']
     search_fields = ['id', 'user', 'city', 'country']
     list_filter = ['city', 'country']
+
+
+admin.site.register(Token)

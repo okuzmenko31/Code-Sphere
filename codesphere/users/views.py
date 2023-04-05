@@ -34,11 +34,8 @@ class ConfirmEmailAndRegister(View):
             user.email = email
             user.username = User.objects.generate_username(email)
             user.save()
-            print('ВСЁ ОК')
         else:
-            print(form.errors)
             return render(self.request, 'users/signup.html', {'form': form, 'email': email})
-        print('НЕ ОК')
         return redirect('welcome-page')
 
 
