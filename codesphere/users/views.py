@@ -6,28 +6,32 @@ from django.shortcuts import render, redirect
 from .forms import SignUpEmailForm, SignUpForm
 from django.views import View
 from .models import User, Token
-from .utils import CreateConfirmationTokenMixin, ConfirmationMailMixin
+from .utils import ConfirmationTokenMixin, ConfirmationMailMixin
 
 
 def is_ajax(request):
     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 
 
-class ConfirmEmailAndRegister(View):
+class ConfirmEmailAndRegister(ConfirmationTokenMixin, View):
 
     def get(self, *args, **kwargs):
         email = kwargs.pop('email')
-        encoded_token = force_str(urlsafe_base64_decode(kwargs.pop('token')))
-        try:
-            token = Token.objects.get(token=encoded_token, owner_email=email)
-        except (Exception,):
-            return redirect('')
-
+        token_from_url = kwargs.pop('token')
         form = SignUpForm()
+
         context = {
             'email': email,
-            'form': form
+            'form': form,
         }
+
+        try:
+            encoded_token = force_str(urlsafe_base64_decode(token_from_url))
+            token = Token.objects.get(token=encoded_token, owner_email=email)
+            if token.expired:
+                context['token_error'] = self.get_token_expired_error()
+        except (Exception,):
+            context['token_error'] = self.get_token_miss_error()
         return render(self.request, template_name='users/signup.html', context=context)
 
     def post(self, *args, **kwargs):
@@ -43,7 +47,7 @@ class ConfirmEmailAndRegister(View):
         return redirect('welcome-page')
 
 
-class SubmitRegistrationEmail(CreateConfirmationTokenMixin,
+class SubmitRegistrationEmail(ConfirmationTokenMixin,
                               ConfirmationMailMixin,
                               View):
     html_message_template = 'users/mails/registration_mail.html'

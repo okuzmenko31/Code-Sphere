@@ -6,10 +6,18 @@ from django.utils.http import urlsafe_base64_encode
 from .models import Token
 
 
-class CreateConfirmationTokenMixin:
+class ConfirmationTokenMixin:
     __token = None
     __token_owner = None
     token_type = None
+
+    @staticmethod
+    def get_token_miss_error():
+        return 'This token does not exist or belongs to another user!'
+
+    @staticmethod
+    def get_token_expired_error():
+        return 'Signature expired'
 
     @staticmethod
     def token_types():
@@ -48,7 +56,7 @@ class CreateConfirmationTokenMixin:
         return self.__token
 
 
-class CreateMailContextMixin:
+class MailContextMixin:
     __subject = None
     __message = ''
     __success_message = None
@@ -88,7 +96,7 @@ class CreateMailContextMixin:
         return context
 
 
-class ConfirmationMailMixin(CreateMailContextMixin):
+class ConfirmationMailMixin(MailContextMixin):
     mail_with_celery = False
     html_message_template = None
 
