@@ -1,6 +1,12 @@
 import binascii
 import os
 
+TOKEN_TYPES = (
+    ('su', 'Sign Up Token'),
+    ('ce', 'Change Email Token'),
+    ('pr', 'Password Reset Token')
+)
+
 
 def get_clean_email(email):
     """This function returns email

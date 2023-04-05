@@ -140,6 +140,8 @@ class Token(models.Model):
                                     null=True)
     created = models.DateTimeField(auto_now_add=True,
                                    verbose_name='Token creation date')
+    expired = models.BooleanField(default=False,
+                                  verbose_name='Token expired')
 
     class Meta:
         verbose_name = 'token'
