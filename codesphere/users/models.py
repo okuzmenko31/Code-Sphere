@@ -150,6 +150,6 @@ class Token(models.Model):
     def __str__(self):
         return f'{self.token}, {self.token_type}'
 
-    def save(self, *args, **kwargs):
-        self.token = generate_token()
-        super().save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     self.token = generate_token()
+    #     super().save(*args, **kwargs)

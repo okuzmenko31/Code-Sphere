@@ -4,6 +4,7 @@ from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from .models import Token
+from .services import generate_token
 
 
 class ConfirmationTokenMixin:
@@ -35,12 +36,15 @@ class ConfirmationTokenMixin:
     def create_token(self):
         if self.check_token_type():
             if Token.objects.filter(token_type=self.token_type, owner_email=self.__token_owner).exists():
-                Token.objects.get(token_type=self.token_type, owner_email=self.__token_owner).delete()
+                Token.objects.get(token_type=self.token_type,
+                                  owner_email=self.__token_owner).delete()
                 self.__token = Token.objects.create(token_type=self.token_type,
-                                                    owner_email=self.__token_owner)
+                                                    owner_email=self.__token_owner,
+                                                    token=generate_token())
             else:
                 self.__token = Token.objects.create(token_type=self.token_type,
-                                                    owner_email=self.__token_owner)
+                                                    owner_email=self.__token_owner,
+                                                    token=generate_token())
         return self.__token
 
     @property

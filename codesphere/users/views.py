@@ -24,13 +24,17 @@ class ConfirmEmailAndRegister(ConfirmationTokenMixin, View):
             'email': email,
             'form': form,
         }
+        encoded_token = None
 
         try:
             encoded_token = force_str(urlsafe_base64_decode(token_from_url))
+        except (Exception,):
+            context['token_error'] = self.get_token_miss_error()
+        try:
             token = Token.objects.get(token=encoded_token, owner_email=email)
             if token.expired:
                 context['token_error'] = self.get_token_expired_error()
-        except (Exception,):
+        except Token.DoesNotExist:
             context['token_error'] = self.get_token_miss_error()
         return render(self.request, template_name='users/signup.html', context=context)
 
