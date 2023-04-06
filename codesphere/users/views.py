@@ -1,11 +1,9 @@
 import json
-from django.utils.http import urlsafe_base64_decode
-from django.utils.encoding import force_str
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from .forms import SignUpEmailForm, SignUpForm
 from django.views import View
-from .models import User, Token
+from .models import User
 from .utils import ConfirmationTokenMixin, ConfirmationMailMixin
 
 
@@ -16,9 +14,9 @@ def is_ajax(request):
 class ConfirmEmailAndRegister(ConfirmationTokenMixin, View):
 
     def get(self, *args, **kwargs):
+        form = SignUpForm()
         email = kwargs.pop('email')
         token = kwargs.pop('token')
-        form = SignUpForm()
 
         context = {
             'email': email,
@@ -33,6 +31,10 @@ class ConfirmEmailAndRegister(ConfirmationTokenMixin, View):
         email = kwargs.pop('email')
         token = kwargs.pop('token')
         form = SignUpForm(self.request.POST)
+        context = {
+            'email': email,
+            'form': form,
+        }
         if form.is_valid():
             user = form.save(commit=False)
             user.email = email
@@ -40,7 +42,8 @@ class ConfirmEmailAndRegister(ConfirmationTokenMixin, View):
             user.save()
             self.delete_token(token=token, email=user.email)
         else:
-            return render(self.request, 'users/signup.html', {'form': form, 'email': email})
+            print(form.errors)
+            return render(self.request, template_name='users/signup.html', context=context)
         return redirect('welcome-page')
 
 
