@@ -1,10 +1,8 @@
-import datetime
-
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
 from django.utils import timezone
-from .services import get_clean_email, generate_token
+from .services import get_clean_email
 
 
 class UserManager(BaseUserManager):
@@ -149,7 +147,3 @@ class Token(models.Model):
 
     def __str__(self):
         return f'{self.token}, {self.token_type}'
-
-    # def save(self, *args, **kwargs):
-    #     self.token = generate_token()
-    #     super().save(*args, **kwargs)

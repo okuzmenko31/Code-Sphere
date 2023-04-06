@@ -17,35 +17,28 @@ class ConfirmEmailAndRegister(ConfirmationTokenMixin, View):
 
     def get(self, *args, **kwargs):
         email = kwargs.pop('email')
-        token_from_url = kwargs.pop('token')
+        token = kwargs.pop('token')
         form = SignUpForm()
 
         context = {
             'email': email,
             'form': form,
         }
-        encoded_token = None
-
-        try:
-            encoded_token = force_str(urlsafe_base64_decode(token_from_url))
-        except (Exception,):
-            context['token_error'] = self.get_token_miss_error()
-        try:
-            token = Token.objects.get(token=encoded_token, owner_email=email)
-            if token.expired:
-                context['token_error'] = self.get_token_expired_error()
-        except Token.DoesNotExist:
-            context['token_error'] = self.get_token_miss_error()
+        token_error_context = self.check_token(token, email)
+        if token_error_context is not None:
+            context.update(token_error_context)
         return render(self.request, template_name='users/signup.html', context=context)
 
     def post(self, *args, **kwargs):
         email = kwargs.pop('email')
+        token = kwargs.pop('token')
         form = SignUpForm(self.request.POST)
         if form.is_valid():
             user = form.save(commit=False)
             user.email = email
             user.username = User.objects.generate_username(email)
             user.save()
+            self.delete_token(token=token, email=user.email)
         else:
             return render(self.request, 'users/signup.html', {'form': form, 'email': email})
         return redirect('welcome-page')

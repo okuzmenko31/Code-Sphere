@@ -1,8 +1,6 @@
 from django.conf import settings
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
-from django.utils.encoding import force_bytes
-from django.utils.http import urlsafe_base64_encode
 from .models import Token
 from .services import generate_token
 
@@ -59,6 +57,25 @@ class ConfirmationTokenMixin:
     def get_token(self):
         return self.__token
 
+    def check_token(self, token, email):
+        context = None
+        try:
+            token = Token.objects.get(token=token, owner_email=email)
+            if token.expired:
+                context = {'token_error': self.get_token_expired_error()}
+        except Token.DoesNotExist:
+            context = {'token_error': self.get_token_miss_error()}
+        return context
+
+    @staticmethod
+    def delete_token(token, email):
+        try:
+            token = Token.objects.get(token=token, owner_email=email)
+            token.delete()
+            return True
+        except Token.DoesNotExist:
+            return False
+
 
 class MailContextMixin:
     __subject = None
@@ -110,7 +127,7 @@ class ConfirmationMailMixin(MailContextMixin):
             'email': str(email),
             'domain': '127.0.0.1:8000',
             'site_name': 'CodeSphere',
-            'token': urlsafe_base64_encode(force_bytes(token.token)),
+            'token': token.token,
             'protocol': 'https' if request.is_secure() else 'http'
         }
         subject = mail_context['subject']
