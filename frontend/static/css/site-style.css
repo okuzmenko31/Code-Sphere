@@ -101,3 +101,10 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 400 !important;
 }
 
+.fs-3 {
+    font-size: 1.2rem !important;
+}
+
+.pb-5 {
+    padding-bottom: 3rem !important;
+}

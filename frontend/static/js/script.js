@@ -16,17 +16,20 @@ function SignUpForm() {
             success: function (response) {
                 var success_message = response.message
                 $('.success-message').text(success_message)
-                $('form.submit_email_signup .success-message').each((index, el) => {
-                    $(el).remove()
-                })
+                $(formID + ' input').each((index, el) => {
+                    $(el).css('border', '1px solid #ced4da');
+                });
                 $('form.submit_email_signup .invalid-feedback').each((index, el) => {
-                    $(el).remove()
+                    $(el).text('')
                 })
             },
             error: function (response) {
                 var errors = $.parseJSON(response.responseText);
                 var keys = Object.keys(errors.errors)
                 var values = Object.values(errors.errors)
+                $('form.submit_email_signup .success-message').each((index, el) => {
+                    $(el).remove()
+                })
                 $.each(errors.errors, function (key, value) {
                     var field = document.getElementById('id_' + key)
                     var error_value = value[0]
@@ -43,6 +46,13 @@ function SignUpForm() {
     $(formID + ' input').focus(function () {
         $(formID).removeClass('is-invalid');
         $(formID).siblings('.invalid-feedback').text('');
+        $('.success-message').text('');
+        $(formID + ' input').each((index, el) => {
+            $(el).css('border', '1px solid #ced4da');
+        });
+        $(formID + ' input').each((index, el) => {
+            $(el).css('border', '1px solid #ced4da');
+        });
     });
 }
 
