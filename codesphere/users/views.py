@@ -1,14 +1,38 @@
 import json
+
+from django.contrib.auth import login
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from .forms import SignUpEmailForm, SignUpForm
 from django.views import View
 from .models import User
 from .utils import ConfirmationTokenMixin, ConfirmationMailMixin
+from .forms import SignInForm
 
 
 def is_ajax(request):
     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
+
+
+class SubmitRegistrationEmail(ConfirmationTokenMixin,
+                              ConfirmationMailMixin,
+                              View):
+    html_message_template = 'users/mails/registration_mail.html'
+    token_type = 'su'
+
+    def post(self, *args, **kwargs):
+        if is_ajax(self.request):
+            form = SignUpEmailForm(self.request.POST)
+            if form.is_valid():
+                email = form.cleaned_data['email']
+                self.token_owner = email
+                self.send_confirmation_mail(self.request, email, self.token_type, self.get_token())
+                success_message = self.get_success_message(self.token_type)
+                return JsonResponse({'success': True, 'message': success_message}, status=200)
+            else:
+                errors = json.loads(json.dumps(form.errors))
+                return JsonResponse({'errors': errors}, status=400)
+        return redirect('welcome-page')
 
 
 class ConfirmEmailAndRegister(ConfirmationTokenMixin, View):
@@ -47,21 +71,15 @@ class ConfirmEmailAndRegister(ConfirmationTokenMixin, View):
         return redirect('welcome-page')
 
 
-class SubmitRegistrationEmail(ConfirmationTokenMixin,
-                              ConfirmationMailMixin,
-                              View):
-    html_message_template = 'users/mails/registration_mail.html'
-    token_type = 'su'
+class SignIn(View):
 
     def post(self, *args, **kwargs):
         if is_ajax(self.request):
-            form = SignUpEmailForm(self.request.POST)
+            form = SignInForm(self.request.POST)
             if form.is_valid():
-                email = form.cleaned_data['email']
-                self.token_owner = email
-                self.send_confirmation_mail(self.request, email, self.token_type, self.get_token())
-                success_message = self.get_success_message(self.token_type)
-                return JsonResponse({'success': True, 'message': success_message}, status=200)
+                user = User.objects.get(email=form.cleaned_data['email'])
+                login(self.request, user)
+                return JsonResponse({'success': True}, status=200)
             else:
                 errors = json.loads(json.dumps(form.errors))
                 return JsonResponse({'errors': errors}, status=400)

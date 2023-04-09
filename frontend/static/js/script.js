@@ -56,6 +56,43 @@ function SignUpForm() {
     });
 }
 
+function SignInForm() {
+    const formID = 'form.sign_in_form'
+
+    $(formID).on('submit', (e) => {
+        e.preventDefault();
+        var form = $(formID);
+        var url = form.attr('action');
+        var method = form.attr('method');
+        var data = form.serialize();
+
+        $.ajax({
+            url: url,
+            method: 'POST',
+            dataType: 'json',
+            data: data,
+            success: function (response) {
+                window.location.href = '/codesphere/welcome/'
+            },
+            error: function (response) {
+                var errors = $.parseJSON(response.responseText);
+                $.each(errors.errors, function (key, value) {
+                    $('.form-errors').text(value[0])
+                });
+
+            }
+        });
+
+
+    });
+
+    $(formID + ' input').focus(function () {
+        $(formID).removeClass('is-invalid');
+        $(formID).siblings('.invalid-feedback').text('');
+    });
+}
+
 $(document).ready(() => {
     SignUpForm();
+    SignInForm();
 });

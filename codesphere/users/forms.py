@@ -46,3 +46,30 @@ class SignUpForm(CustomPasswordValidation, UserCreationForm):
         password1 = self.cleaned_data['password1']
         self.validate_password(password1)
         return password1
+
+
+class SignInForm(forms.Form):
+    email = forms.EmailField(label='',
+                             widget=forms.EmailInput(attrs={'class': 'form-control',
+                                                            'autocomplete': 'email',
+                                                            'placeholder': 'E-mail'}))
+    password = forms.CharField(label='',
+                               widget=forms.PasswordInput(attrs={'class': 'form-control',
+                                                                 'autocomplete': 'password',
+                                                                 'placeholder': 'Password'}))
+
+    def clean(self):
+        data = self.cleaned_data
+        try:
+            email = data['email']
+        except (Exception,):
+            raise forms.ValidationError('Write your email in format like this: example@example.com')
+        password = data['password']
+
+        try:
+            user = User.objects.get(email=email)
+        except (Exception,):
+            raise forms.ValidationError('User with this email does not exits!')
+        if not user.check_password(password):
+            raise forms.ValidationError('The password is wrong!')
+        return data

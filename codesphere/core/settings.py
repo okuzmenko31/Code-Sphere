@@ -46,9 +46,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'allauth',
+    'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.github',
     'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.steam',
     'mdeditor',
 
     # applications
@@ -214,10 +216,17 @@ SOCIALACCOUNT_PROVIDERS = {
 
     "github": {
         "APP": {
-            "client_id": '',
-            "secret": '',
+            "client_id": os.getenv('CLIENT_ID'),
+            "secret": os.getenv('CLIENT_SECRET'),
             "SCOPE": ["email"],
-        }
+        },
+    },
+    "steam": {
+        "APP": {
+            "client_id": os.getenv('STEM_CLIENT_ID'),
+            "secret": os.getenv('STEAM_SECRET'),
+            "SCOPE": ["email"],
+        },
     },
     "google": {
         # CLIENT_ID and SECRET provieds via admin site.
@@ -230,6 +239,11 @@ SOCIALACCOUNT_PROVIDERS = {
         "OAUTH_PKCE_ENABLED": True,
     },
 }
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
 
 # CELERY
 
