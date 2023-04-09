@@ -229,7 +229,7 @@ SOCIALACCOUNT_PROVIDERS = {
         },
     },
     "google": {
-        # CLIENT_ID and SECRET provieds via admin site.
+        # CLIENT_ID and SECRET provides via admin site.
         "SCOPE": [
             "email",
         ],

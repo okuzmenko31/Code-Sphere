@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import *
+from allauth.socialaccount.views import SignupView as SocialSignupView
 
 urlpatterns = [
     path('submit_email_signup/',

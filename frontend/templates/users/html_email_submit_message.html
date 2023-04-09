@@ -14,7 +14,7 @@
 
 <h1>Confirm your email and register</h1>
 
-<a href="{{ protocol }}://{{ domain }}{% url 'confirm_email_register' uidb64=uid email=email %}">
+<a href="{{ protocol }}://{{ domain }}{% url 'confirm_email_register' token=token email=email %}">
     CONFIRM EMAIL AND REGISTER
 </a>
 <h4>{{ site_name }}</h4>

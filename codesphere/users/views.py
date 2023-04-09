@@ -1,8 +1,9 @@
 import json
-
 from django.contrib.auth import login
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
+from django.urls import reverse
+from django.views.generic import FormView
 from .forms import SignUpEmailForm, SignUpForm
 from django.views import View
 from .models import User

@@ -9,6 +9,7 @@ class ConfirmationTokenMixin:
     __token = None
     __token_owner = None
     token_type = None
+    check_token_context = True
 
     @staticmethod
     def get_token_miss_error():
@@ -58,14 +59,23 @@ class ConfirmationTokenMixin:
         return self.__token
 
     def check_token(self, token, email):
-        context = None
-        try:
-            token = Token.objects.get(token=token, owner_email=email)
-            if token.expired:
-                context = {'token_error': self.get_token_expired_error()}
-        except Token.DoesNotExist:
-            context = {'token_error': self.get_token_miss_error()}
-        return context
+        if self.check_token_context:
+            context = None
+            try:
+                token = Token.objects.get(token=token, owner_email=email)
+                if token.expired:
+                    context = {'token_error': self.get_token_expired_error()}
+            except Token.DoesNotExist:
+                context = {'token_error': self.get_token_miss_error()}
+            return context
+        else:
+            try:
+                token = Token.objects.get(token=token, owner_email=email)
+                if token.expired:
+                    return False
+            except Token.DoesNotExist:
+                return False
+            return True
 
     @staticmethod
     def delete_token(token, email):

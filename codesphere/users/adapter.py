@@ -1,5 +1,4 @@
 from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
-from django.contrib.auth import get_user_model
 from .models import User
 
 
@@ -7,8 +6,6 @@ class CustomSocialAdapter(DefaultSocialAccountAdapter):
 
     def populate_user(self, request, sociallogin, data):
         user = super(CustomSocialAdapter, self).populate_user(request, sociallogin, data)
-        print(user)
-        print(data)
         if 'first_name' and 'last_name' in data:
             user.full_name = f'{data["first_name"]} {data["last_name"]}'
         elif 'full_name' in data:
@@ -21,6 +18,4 @@ class CustomSocialAdapter(DefaultSocialAccountAdapter):
             user.username = '@' + data['username']
         else:
             user.username = User.objects.generate_username(data['email'])
-        if 'email' not in data:
-            user.email = 'kitsune@gmail.com'
         return user
