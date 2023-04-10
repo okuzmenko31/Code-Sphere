@@ -1,5 +1,6 @@
 {% extends 'site-base.html' %}
 {% load static %}
+{% load comments_extras %}
 
 {% block title %}
     {{ post.title }}
@@ -83,9 +84,38 @@
                         <div class="post-comment">
                             <form action="{% url 'add_comment' post.id %}" method="post" style="width: 85%">
                                 {% csrf_token %}
+                                {{ comment_form.media }}
                                 {{ comment_form.as_p }}
                                 <button type="submit" class="btn fw-bold add-comment-btn">Add comment</button>
                             </form>
+
+                            <div class="all-comments" style="margin-top: 50px">
+                                {% for comment in comments %}
+                                    <div class="writer-info-get" style="display: flex; align-items: center">
+
+                                        <div class="writer-avatar">
+                                            {% if comment.user.avatar %}
+                                                <img src="{{ comment.user.avatar }}" alt="" width="30"
+                                                     class="writer">
+                                            {% else %}
+                                                <img src="{% static 'img/profile/default_profile_img.png' %}" alt=""
+                                                     width="30"
+                                                     class="writer">
+                                            {% endif %}
+                                        </div>
+
+                                        <p class="writer-info username fw-bold">{{ comment.user.user.username }}</p>
+                                        <p class="writer-info timesince"
+                                           style="font-size: 0.8rem; margin-top: 17px; color: #777; margin-left: 9px">
+                                            {{ comment.date|timesince }} ago
+                                        </p>
+
+                                    </div>
+                                    <div class="comment">
+                                        <p class="comment">{{ comment.text|convert_to_markdown }}</p>
+                                    </div>
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
                 </div>

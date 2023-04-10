@@ -1,5 +1,7 @@
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.urls import reverse
+from comments.models import Comment
 from tags.models import Tags
 from mdeditor.fields import MDTextField
 from users.models import UserProfile, User
@@ -70,3 +72,9 @@ class Posts(models.Model):
 
     def post_views(self):
         return self.views.count()
+
+    def post_comments_count(self):
+        post = self
+        content_type = ContentType.objects.get_for_model(post)
+        count = Comment.objects.filter(content_type=content_type, object_id=post.id).count()
+        return count

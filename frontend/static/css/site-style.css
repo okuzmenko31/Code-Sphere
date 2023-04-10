@@ -170,3 +170,8 @@ h1, h2, h3, h4, h5, h6 {
     color: #ffffff;
     background: linear-gradient(10deg, #8524b6, #c055ff);
 }
+
+.writer-info {
+    margin-left: 15px;
+    margin-top: 15px
+}

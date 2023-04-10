@@ -1,5 +1,6 @@
 from django import forms
 from .models import Comment
+from mdeditor.fields import MDTextFormField
 
 
 class PostComment(forms.ModelForm):
@@ -7,8 +8,7 @@ class PostComment(forms.ModelForm):
         model = Comment
         fields = ('text',)
         widgets = {
-            'text': forms.Textarea(attrs={'class': 'form-control',
-                                          'rows': 4})
+            'text': MDTextFormField()
         }
         labels = {
             'text': 'Your comment'
