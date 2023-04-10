@@ -9,6 +9,7 @@ from tags.models import Tags
 from .utils import AddViewByIP
 from comments.forms import PostComment
 from comments.models import Comment
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class AllPostsListView(ListView):
@@ -54,15 +55,18 @@ class PostDetail(AddViewByIP, View):
         comment_form = PostComment()
         post = Posts.objects.get(id=kwargs['post_id'])
         content_type = ContentType.objects.get_for_model(post)
-        comments = Comment.objects.filter(content_type=content_type, object_id=post.id)
+        comments = Comment.objects.filter(
+            content_type=content_type, object_id=post.id)
         context = {
             'post': post,
             'comment_form': comment_form,
             'comments': comments
         }
-        if PostLikes.objects.filter(user=self.request.user.profile, post=post).exists():
-            user_like = PostLikes.objects.get(post=post, user=self.request.user.profile)
-            context['user_like'] = user_like
+        if self.request.user.is_authenticated:
+            if PostLikes.objects.filter(user=self.request.user.profile, post=post).exists():
+                user_like = PostLikes.objects.get(
+                    post=post, user=self.request.user.profile)
+                context['user_like'] = user_like
         self.check_or_add_ip(self.request, post)
         return render(self.request, template_name='posts/post-detail.html', context=context)
 
@@ -74,7 +78,8 @@ class LikePost(View):
 
         if PostLikes.objects.filter(post=post,
                                     user=self.request.user.profile).exists():
-            like = PostLikes.objects.get(post=post, user=self.request.user.profile)
+            like = PostLikes.objects.get(
+                post=post, user=self.request.user.profile)
             like.delete()
         else:
             PostLikes.objects.create(post=post, user=self.request.user.profile)

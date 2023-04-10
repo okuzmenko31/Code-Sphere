@@ -30,7 +30,8 @@ class SubmitRegistrationEmail(ConfirmationTokenMixin,
             if form.is_valid():
                 email = form.cleaned_data['email']
                 self.token_owner = email
-                self.send_confirmation_mail(self.request, email, self.token_type, self.get_token())
+                self.send_confirmation_mail(
+                    self.request, email, self.token_type, self.get_token())
                 success_message = self.get_success_message(self.token_type)
                 return JsonResponse({'success': True, 'message': success_message}, status=200)
             else:
