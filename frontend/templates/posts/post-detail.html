@@ -53,7 +53,12 @@
                     <div class="card" style="margin-bottom: 100px; border: none">
                         <div class="row user-info">
                             <div class="user-img mt-3">
-                                <img src="{{ post.creator.avatar.url }}" alt="Creator img" class="creator-img">
+                                {% if post.creator.avatar %}
+                                    <img src="{{ post.creator.avatar.url }}" alt="Creator img" class="creator-img">
+                                {% else %}
+                                    <img src="{% static 'img/profile/default_profile_img.png' %}" alt="" width="30"
+                                         class="creator-img">
+                                {% endif %}
                             </div>
                         </div>
                         <div class="card-body">
@@ -61,6 +66,26 @@
                             <div id="content_{{ post.id }}">
                                 <textarea>{{ post.text }}</textarea>
                             </div>
+                            {% if user_like %}
+                                <div class="like-post liked">
+                                    <a href="{% url 'like_post' post.id %}"><i class="bi bi-heart"></i>
+                                        <p>{{ post.post_likes.count }}</p></a>
+                                </div>
+                            {% else %}
+                                <div class="like-post">
+                                    <a href="{% url 'like_post' post.id %}"><i class="bi bi-heart"></i>
+                                        <p>{{ post.post_likes.count }}</p></a>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <hr>
+                        <h5 class="comments">Comments</h5>
+                        <div class="post-comment">
+                            <form action="{% url 'add_comment' post.id %}" method="post" style="width: 85%">
+                                {% csrf_token %}
+                                {{ comment_form.as_p }}
+                                <button type="submit" class="btn fw-bold add-comment-btn">Add comment</button>
+                            </form>
                         </div>
                     </div>
                 </div>

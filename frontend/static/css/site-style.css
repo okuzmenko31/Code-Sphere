@@ -152,3 +152,21 @@ h1, h2, h3, h4, h5, h6 {
     border-radius: 15px;
     background: linear-gradient(to right, #2049bd, #C055FFFF);
 }
+
+.post-views, .post-likes {
+    color: #7600ff !important;
+}
+
+.like-post a {
+    color: #000;
+    text-decoration: none;
+}
+
+.liked .bi:before {
+    color: red;
+}
+
+.add-comment-btn {
+    color: #ffffff;
+    background: linear-gradient(10deg, #8524b6, #c055ff);
+}

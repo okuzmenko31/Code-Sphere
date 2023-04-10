@@ -89,7 +89,12 @@
                         <div class="card" style="margin-bottom: 100px">
                             <div class="row user-info">
                                 <div class="user-img mt-3">
-                                    <img src="{{ post.creator.avatar.url }}" alt="Creator img" class="creator-img">
+                                    {% if post.creator.avatar %}
+                                        <img src="{{ post.creator.avatar.url }}" alt="Creator img" class="creator-img">
+                                    {% else %}
+                                        <img src="{% static 'img/profile/default_profile_img.png' %}" alt="" width="30"
+                                             class="creator-img">
+                                    {% endif %}
                                 </div>
                             </div>
                             <div class="card-body">
@@ -111,6 +116,14 @@
                                             </div>
                                         </div>
                                     {% endfor %}
+                                </div>
+                                <div class="post-plus-info" style="display: flex; align-items: center">
+                                    <p class="post-views fw-bold"><i class="bi bi-eye"></i>
+                                        {{ post.post_views }}
+                                    </p>
+                                    <p class="post-likes fw-bold" style="margin-left: 20px"><i class="bi bi-heart"></i>
+                                        {{ post.post_likes.count }}
+                                    </p>
                                 </div>
                                 <img src="{{ post.cover_photo.url }}" alt="" class="post-cover">
                                 <a href="{{ post.get_absolute_url }}" class="btn fw-bold read-post-btn">Read post</a>
