@@ -123,3 +123,32 @@ h1, h2, h3, h4, h5, h6 {
     height: 50px;
     object-fit: cover;
 }
+
+.post-cover {
+    width: 760px;
+    margin-top: 20px;
+    margin-bottom: 40px;
+    border-radius: 15px;
+}
+
+.read-post-btn {
+    color: #ffffff;
+    background: linear-gradient(10deg, #8524b6, #c055ff);
+}
+
+.post-title {
+    color: #000 !important;
+    text-decoration: none;
+}
+
+.post-title:hover {
+    color: #7600ff !important;
+    text-decoration: none;
+}
+
+.post-cover {
+    padding: 0.3rem;
+    width: 750px;
+    border-radius: 15px;
+    background: linear-gradient(to right, #2049bd, #C055FFFF);
+}

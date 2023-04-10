@@ -93,20 +93,27 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <h5 class="card-title">{{ post.title }}</h5>
+                                <h5 class="card-title">
+                                    <a href="{{ post.get_absolute_url }}" class="post-title">
+                                        {{ post.title }}
+                                    </a>
+                                </h5>
+                                <p class="short-description">{{ post.short_description }}</p>
                                 <div class="row">
                                     {% for tag in post.tags.all %}
                                         <div class="col-md-2">
                                             <div class="row">
                                                 <div class="content" style="text-align: center; display: flex">
-                                                    <img src="{{ tag.icon.url }}" alt="" style="width: 20px; height: 20px">
+                                                    <img src="{{ tag.icon.url }}" alt=""
+                                                         style="width: 20px; height: 20px">
                                                     <p style="font-weight: bold; padding-left: 10px">{{ tag.name }}</p>
                                                 </div>
                                             </div>
                                         </div>
                                     {% endfor %}
                                 </div>
-                                <a href="#" class="btn btn-success">Go somewhere</a>
+                                <img src="{{ post.cover_photo.url }}" alt="" class="post-cover">
+                                <a href="{{ post.get_absolute_url }}" class="btn fw-bold read-post-btn">Read post</a>
                             </div>
                         </div>
                     {% endfor %}
