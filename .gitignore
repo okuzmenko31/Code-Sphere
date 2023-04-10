@@ -10,3 +10,5 @@ celerybeat-schedule.db
 celerybeat-schedule
 /static/
 TODO
+static/mdeditor
+/frontend/static/mdeditor/

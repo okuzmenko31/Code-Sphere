@@ -1,0 +1,80 @@
+{% extends 'site-base.html' %}
+{% load static %}
+
+{% block title %}
+    {{ post.title }}
+{% endblock %}
+
+{% block top-site-nav %}
+    {% include 'inc/top-site-nav.html' %}
+{% endblock %}
+
+{% block site-nav %}
+    <div class="site-menu">
+        <div class="navbar mt-2">
+            <div class="container-fluid" style="max-width: 1096px;
+         margin: auto;">
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a href="" class="nav-link fw-bold fs-6 item-active">Posts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link fw-bold fs-6">Blogs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link fw-bold fs-6">Q/A</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link fw-bold fs-6">News</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link fw-bold fs-6">Career</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link fw-bold fs-6">Recommended webinars</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'all-tags' %}" class="nav-link fw-bold fs-6">Tags</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block site-content %}
+    <div class="row">
+
+        <div class="col-9 main-content" style="max-width: 880px; margin-right: 16px">
+            <div class="cont" style="background-color: #fff; margin-top: 15px">
+
+                <div class="row">
+                    <!--Here will be posts main content-->
+                    <div class="card" style="margin-bottom: 100px">
+                        <div class="row user-info">
+                            <div class="user-img mt-3">
+                                <img src="{{ post.creator.avatar.url }}" alt="Creator img" class="creator-img">
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">{{ post.title }}</h5>
+                            <div id="content-{{ post.id }}">
+                                <textarea>{{ post.text }}</textarea>
+                            </div>
+                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="col-3 cont-sidebar" style="background-color: #fff">
+
+        </div>
+
+
+    </div>
+
+{% endblock %}

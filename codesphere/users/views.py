@@ -9,6 +9,9 @@ from django.views import View
 from .models import User
 from .utils import ConfirmationTokenMixin, ConfirmationMailMixin
 from .forms import SignInForm
+from django.conf import settings
+
+DEFAULT_AUTH = settings.AUTHENTICATION_BACKENDS[0]
 
 
 def is_ajax(request):
@@ -65,6 +68,7 @@ class ConfirmEmailAndRegister(ConfirmationTokenMixin, View):
             user.email = email
             user.username = User.objects.generate_username(email)
             user.save()
+            login(self.request, user, backend=DEFAULT_AUTH)
             self.delete_token(token=token, email=user.email)
         else:
             print(form.errors)
@@ -79,7 +83,7 @@ class SignIn(View):
             form = SignInForm(self.request.POST)
             if form.is_valid():
                 user = User.objects.get(email=form.cleaned_data['email'])
-                login(self.request, user)
+                login(self.request, user, backend=DEFAULT_AUTH)
                 return JsonResponse({'success': True}, status=200)
             else:
                 errors = json.loads(json.dumps(form.errors))

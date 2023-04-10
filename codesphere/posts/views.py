@@ -33,3 +33,19 @@ class CreatePostView(View):
             except (Exception,):
                 return render(self.request, 'posts/create-post.html', {'form': form})
         return render(self.request, 'posts/create-post.html', {'form': form})
+
+    def post(self, *args, **kwargs):
+        form = CreatePostForm(self.request.POST, self.request.FILES)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.creator = self.request.user.profile
+            post.save()
+            post.tags.set(form.cleaned_data['tags'])
+        return self.get(*args, **kwargs)
+
+
+class PostDetail(View):
+
+    def get(self, *args, **kwargs):
+        post = Posts.objects.get(id=kwargs['post_id'])
+        return render(self.request, 'posts/post-detail.html', {'post': post})

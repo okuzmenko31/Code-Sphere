@@ -11,10 +11,11 @@ class CreatePostForm(forms.ModelForm):
 
     class Meta:
         model = Posts
-        fields = ('title', 'text', 'tags', 'cover_photo')
+        fields = ('title', 'short_description', 'text', 'tags', 'cover_photo')
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'text': MDTextFormField(),
+            'short_description': forms.TextInput(attrs={'class': 'form-control'}),
             'cover_photo': forms.FileInput(attrs={'class': 'form-control'})
         }
 
