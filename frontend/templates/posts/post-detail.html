@@ -1,4 +1,4 @@
-{% extends 'site-base.html' %}
+{% extends 'site-content-base.html' %}
 {% load static %}
 {% load comments_extras %}
 
@@ -86,7 +86,14 @@
                                 {% csrf_token %}
                                 {{ comment_form.media }}
                                 {{ comment_form.as_p }}
-                                <button type="submit" class="btn fw-bold add-comment-btn">Add comment</button>
+                                {% if request.user.is_authenticated %}
+                                    <button type="submit" class="btn fw-bold add-comment-btn">Add comment</button>
+                                {% else %}
+                                    <button class="btn fw-bold add-comment-btn" data-bs-toggle="modal" 
+                                    data-bs-target="#SignUpEmailModal">
+                                        Add comment
+                                    </button>
+                                {% endif %}
                             </form>
 
                             <div class="all-comments" style="margin-top: 50px">

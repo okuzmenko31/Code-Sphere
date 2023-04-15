@@ -29,8 +29,15 @@
     </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static 'mdeditor/js/editormd.min.js' %}"></script>
+<script src="{% static 'mdeditor/js/lib/marked.min.js' %}"></script>
+<script src="{% static 'mdeditor/js/lib/prettify.min.js' %}"></script>
+<script src="{% static 'mdeditor/js/lib/raphael.min.js' %}"></script>
+<script src="{% static 'mdeditor/js/lib/underscore.min.js' %}"></script>
+<script src="{% static 'mdeditor/js/lib/sequence-diagram.min.js' %}"></script>
+<script src="{% static 'mdeditor/js/lib/flowchart.min.js' %}"></script>
 <script src="{% static 'js/script.js' %}"></script>
+{#<script src="{% static 'mdeditor/js/lib/jquery.flowchart.min.js' %}"></script>#}
 <script>
     $(document).ready(function () {
         $('textarea').each(function () {
