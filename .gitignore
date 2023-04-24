@@ -13,3 +13,4 @@ TODO
 static/mdeditor
 /frontend/static/mdeditor/
 codesphere_db
+*.DS_Store
