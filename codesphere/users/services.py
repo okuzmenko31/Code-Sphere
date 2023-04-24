@@ -16,7 +16,7 @@ def get_clean_email(email):
     return username
 
 
-def generate_token():
+def generate_unique_token():
     """
     This function returns 32 digits token.
     """

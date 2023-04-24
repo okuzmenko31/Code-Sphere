@@ -2,7 +2,7 @@ from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
 from django.utils import timezone
-from .services import get_clean_email
+from .services import get_clean_email, generate_unique_token
 
 
 class UserManager(BaseUserManager):
@@ -147,3 +147,17 @@ class Token(models.Model):
 
     def __str__(self):
         return f'{self.token}, {self.token_type}'
+
+    @staticmethod
+    def generate_token():
+        return generate_unique_token()
+
+    def save(self, *args, **kwargs):
+        if self._state.adding and (not self.token or
+                                   Token.objects.filter(token=self.token).exists()):
+            self.token = self.generate_token()
+        super().save(*args, **kwargs)
+
+    @classmethod
+    def get_token_from_str(cls, token_value: str, token_owner: str):
+        return cls.objects.get(token=token_value, token_owner=token_owner)

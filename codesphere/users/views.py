@@ -2,12 +2,10 @@ import json
 from django.contrib.auth import login
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
-from django.urls import reverse
-from django.views.generic import FormView
 from .forms import SignUpEmailForm, SignUpForm
 from django.views import View
 from .models import User
-from .utils import ConfirmationTokenMixin, ConfirmationMailMixin
+from .token import TokenMixin, get_token_data, TokenTypes
 from .forms import SignInForm
 from django.conf import settings
 
@@ -18,29 +16,28 @@ def is_ajax(request):
     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 
 
-class SubmitRegistrationEmail(ConfirmationTokenMixin,
-                              ConfirmationMailMixin,
+class SubmitRegistrationEmail(TokenMixin,
                               View):
     html_message_template = 'users/mails/registration_mail.html'
-    token_type = 'su'
+    token_type = TokenTypes.SIGNUP
 
     def post(self, *args, **kwargs):
         if is_ajax(self.request):
             form = SignUpEmailForm(self.request.POST)
             if form.is_valid():
                 email = form.cleaned_data['email']
-                self.token_owner = email
-                self.send_confirmation_mail(
-                    self.request, email, self.token_type, self.get_token())
-                success_message = self.get_success_message(self.token_type)
-                return JsonResponse({'success': True, 'message': success_message}, status=200)
+                tokenized_mail_message = self.send_tokenized_mail(email)
+                return JsonResponse({'success': True, 'message': tokenized_mail_message},
+                                    status=200)
             else:
                 errors = json.loads(json.dumps(form.errors))
                 return JsonResponse({'errors': errors}, status=400)
         return redirect('welcome-page')
 
 
-class ConfirmEmailAndRegister(ConfirmationTokenMixin, View):
+class ConfirmEmailAndRegister(TokenMixin,
+                              View):
+    token_type = TokenTypes.SIGNUP
 
     def get(self, *args, **kwargs):
         form = SignUpForm()
@@ -51,9 +48,9 @@ class ConfirmEmailAndRegister(ConfirmationTokenMixin, View):
             'email': email,
             'form': form,
         }
-        token_error_context = self.check_token(token, email)
-        if token_error_context is not None:
-            context.update(token_error_context)
+        token_data = get_token_data(token, email)
+        if token_data.error:
+            context['token_error'] = token_data.error
         return render(self.request, template_name='users/signup.html', context=context)
 
     def post(self, *args, **kwargs):
@@ -64,13 +61,14 @@ class ConfirmEmailAndRegister(ConfirmationTokenMixin, View):
             'email': email,
             'form': form,
         }
-        if form.is_valid():
+        token_data = get_token_data(token, email)
+        if form.is_valid() and token_data.token:
             user = form.save(commit=False)
             user.email = email
             user.username = User.objects.generate_username(email)
             user.save()
             login(self.request, user, backend=DEFAULT_AUTH)
-            self.delete_token(token=token, email=user.email)
+            token_data.token.delete()
         else:
             print(form.errors)
             return render(self.request, template_name='users/signup.html', context=context)
