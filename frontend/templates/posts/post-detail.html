@@ -63,8 +63,9 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <h5 class="card-title">{{ post.title }}</h5>
-                            <div id="content_{{ post.id }}">
+                            <p class="card-title" style="padding: 20px;
+                             font-size: 2.5rem; line-height: 1.2; font-weight: bold">{{ post.title }}</p>
+                            <div id="content_{{ post.id }}" style="border-top: 1px solid #e5e5e5">
                                 <textarea>{{ post.text }}</textarea>
                             </div>
                             {% if user_like %}
@@ -89,8 +90,8 @@
                                 {% if request.user.is_authenticated %}
                                     <button type="submit" class="btn fw-bold add-comment-btn">Add comment</button>
                                 {% else %}
-                                    <button class="btn fw-bold add-comment-btn" data-bs-toggle="modal" 
-                                    data-bs-target="#SignUpEmailModal">
+                                    <button class="btn fw-bold add-comment-btn" data-bs-toggle="modal"
+                                            data-bs-target="#SignUpEmailModal">
                                         Add comment
                                     </button>
                                 {% endif %}
@@ -119,7 +120,12 @@
 
                                     </div>
                                     <div class="comment">
-                                        <p class="comment">{{ comment.text|convert_to_markdown }}</p>
+                                        <p class="comment-text">{{ comment.text|convert_to_markdown }}</p>
+                                        <style>
+                                            .comment img {
+                                                max-width: 100%;
+                                            }
+                                        </style>
                                     </div>
                                 {% endfor %}
                             </div>

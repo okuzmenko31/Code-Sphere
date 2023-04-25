@@ -8,7 +8,7 @@ class PostComment(forms.ModelForm):
         model = Comment
         fields = ('text',)
         widgets = {
-            'text': MDTextFormField()
+            'text': MDTextFormField(config_name='default')
         }
         labels = {
             'text': 'Your comment'

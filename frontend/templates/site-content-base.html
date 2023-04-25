@@ -29,7 +29,6 @@
     </div>
 </div>
 
-<script src="{% static 'mdeditor/js/editormd.min.js' %}"></script>
 <script src="{% static 'mdeditor/js/lib/marked.min.js' %}"></script>
 <script src="{% static 'mdeditor/js/lib/prettify.min.js' %}"></script>
 <script src="{% static 'mdeditor/js/lib/raphael.min.js' %}"></script>
@@ -37,7 +36,6 @@
 <script src="{% static 'mdeditor/js/lib/sequence-diagram.min.js' %}"></script>
 <script src="{% static 'mdeditor/js/lib/flowchart.min.js' %}"></script>
 <script src="{% static 'js/script.js' %}"></script>
-{#<script src="{% static 'mdeditor/js/lib/jquery.flowchart.min.js' %}"></script>#}
 <script>
     $(document).ready(function () {
         $('textarea').each(function () {
@@ -47,7 +45,7 @@
                 taskList: true,
                 tex: true,
                 flowChart: true,
-                sequenceDiagram: true,
+                sequenceDiagram: true
             });
         });
     });

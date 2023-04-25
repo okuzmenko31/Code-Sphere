@@ -200,3 +200,7 @@ header .card-header {
     color: red !important;
     font-weight: 400 !important;
 }
+
+.comment img {
+    max-width: 300px !important;
+}
