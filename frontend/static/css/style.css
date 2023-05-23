@@ -204,3 +204,11 @@ header .card-header {
 .comment img {
     max-width: 300px !important;
 }
+
+.profile-img {
+    margin-left: 20px;
+    width: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    height: 40px;
+}

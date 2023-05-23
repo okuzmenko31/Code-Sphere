@@ -1,22 +1,27 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView
 from django.views import View
-
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
 from .models import Tags, TagSubscribers
 
 
-class AllTagsListView(ListView):
+class AllTagsListView(LoginRequiredMixin,
+                      ListView):
     """All tags view"""
     model = Tags
     template_name = 'tags/all-tags.html'
     context_object_name = 'tags'
+    login_url = reverse_lazy('welcome-page')
 
     def get_queryset(self):
         return Tags.objects.all()
 
 
-class SubscribeTag(View):
+class SubscribeTag(LoginRequiredMixin,
+                   View):
     """Subscribing tags view"""
+    login_url = reverse_lazy('welcome-page')
 
     def get(self, *args, **kwargs):
         tag = get_object_or_404(Tags, id=self.kwargs['tag_id'])

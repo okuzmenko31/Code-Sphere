@@ -66,7 +66,7 @@
                             <p class="card-title" style="padding: 20px;
                              font-size: 2.5rem; line-height: 1.2; font-weight: bold">{{ post.title }}</p>
                             <div id="content_{{ post.id }}" style="border-top: 1px solid #e5e5e5">
-                                <textarea>{{ post.text }}</textarea>
+                                <textarea class="post-body">{{ post.text }}</textarea>
                             </div>
                             {% if user_like %}
                                 <div class="like-post liked">
@@ -119,14 +119,16 @@
                                         </p>
 
                                     </div>
-                                    <div class="comment">
-                                        <p class="comment-text">{{ comment.text|convert_to_markdown }}</p>
-                                        <style>
-                                            .comment img {
-                                                max-width: 100%;
-                                            }
-                                        </style>
+
+                                    <div id="content_{{ comment.id }}15" style="border-top: 1px solid #e5e5e5">
+                                        <textarea class="comment-body">{{ comment.text }}</textarea>
                                     </div>
+                                    <style>
+                                        .comment img {
+                                            max-width: 100%;
+                                        }
+                                    </style>
+
                                 {% endfor %}
                             </div>
                         </div>

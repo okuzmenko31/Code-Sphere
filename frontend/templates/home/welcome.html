@@ -15,7 +15,12 @@
             improve your knowledge and help others</p>
 
         <div class="join d-flex">
-            <a href="" class="btn btn-success rounded-pill" style="height: 40px">Join IT community and Share</a>
+            {% if request.user.is_authenticated %}
+                <a href="{% url 'all-posts' %}" class="btn btn-success rounded-pill" style="height: 40px">Join IT community and Share</a>
+            {% else %}
+                <a class="btn btn-success rounded-pill" data-bs-toggle="modal"
+                   data-bs-target="#SignUpEmailModal" style="height: 40px">Join IT community and Share</a>
+            {% endif %}
             <p class="wrapper-text ms-3">Share your knowledge with others,
                 ask questions,<br> read news, make posts
                 and much more on Code Sphere.</p>

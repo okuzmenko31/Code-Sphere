@@ -10,12 +10,15 @@ from .utils import AddViewByIP
 from comments.forms import PostComment
 from comments.models import Comment
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
 
 
-class AllPostsListView(ListView):
+class AllPostsListView(LoginRequiredMixin,
+                       ListView):
     model = Posts
     template_name = 'posts/all-posts.html'
     context_object_name = 'posts'
+    login_url = reverse_lazy('welcome-page')
 
     def get_queryset(self):
         return Posts.objects.filter(is_confirmed=True)
@@ -25,7 +28,9 @@ def is_ajax(request):
     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 
 
-class CreatePostView(View):
+class CreatePostView(LoginRequiredMixin,
+                     View):
+    login_url = reverse_lazy('welcome-page')
 
     def get(self, *args, **kwargs):
         form = CreatePostForm()
@@ -49,7 +54,10 @@ class CreatePostView(View):
         return self.get(*args, **kwargs)
 
 
-class PostDetail(AddViewByIP, View):
+class PostDetail(LoginRequiredMixin,
+                 AddViewByIP,
+                 View):
+    login_url = reverse_lazy('welcome-page')
 
     def get(self, *args, **kwargs):
         comment_form = PostComment()
@@ -71,7 +79,9 @@ class PostDetail(AddViewByIP, View):
         return render(self.request, template_name='posts/post-detail.html', context=context)
 
 
-class LikePost(View):
+class LikePost(LoginRequiredMixin,
+               View):
+    login_url = reverse_lazy('welcome-page')
 
     def get(self, *args, **kwargs):
         post = get_object_or_404(Posts, id=kwargs['post_id'])
@@ -86,19 +96,25 @@ class LikePost(View):
         return redirect(post.get_absolute_url())
 
 
-class AddPostComment(CreateView):
+class AddPostComment(LoginRequiredMixin,
+                     CreateView):
     form_class = PostComment
     template_name = 'posts/post-detail.html'
     context_object_name = 'form'
+    login_url = reverse_lazy('welcome-page')
 
     def form_valid(self, form):
         post_id = self.kwargs['post_id']
         post = get_object_or_404(Posts, id=post_id)
-
-        # saving comment
         comment = form.save(commit=False)
         comment.user = self.request.user.profile
         comment.content_type = ContentType.objects.get_for_model(post)
         comment.object_id = post_id
         comment.save()
         return redirect(post.get_absolute_url())
+
+
+class MostPopularPosts(LoginRequiredMixin, ListView):
+    model = Posts
+    template_name = ''
+    login_url = reverse_lazy('welcome-page')

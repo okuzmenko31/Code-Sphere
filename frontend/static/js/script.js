@@ -92,7 +92,22 @@ function SignInForm() {
     });
 }
 
+
 $(document).ready(() => {
     SignUpForm();
     SignInForm();
+});
+
+$(document).ready(function () {
+    $('div[id^="content_"]').each(function () {
+        var id = $(this).attr('id');
+        var textarea = $(this).find('textarea.post-body');
+        editormd.markdownToHTML(id, {
+            emoji: true,
+            taskList: true,
+            tex: true,
+            flowChart: true,
+            sequenceDiagram: true,
+        });
+    });
 });
