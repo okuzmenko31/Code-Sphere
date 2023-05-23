@@ -1,6 +1,5 @@
 {% extends 'site-content-base.html' %}
 {% load static %}
-{% load comments_extras %}
 
 {% block title %}
     {{ post.title }}
@@ -66,7 +65,7 @@
                             <p class="card-title" style="padding: 20px;
                              font-size: 2.5rem; line-height: 1.2; font-weight: bold">{{ post.title }}</p>
                             <div id="content_{{ post.id }}" style="border-top: 1px solid #e5e5e5">
-                                <textarea class="post-body">{{ post.text }}</textarea>
+                                <p class="post-body">{{ post.text|safe }}</p>
                             </div>
                             {% if user_like %}
                                 <div class="like-post liked">
@@ -121,7 +120,7 @@
                                     </div>
 
                                     <div id="content_{{ comment.id }}15" style="border-top: 1px solid #e5e5e5">
-                                        <textarea class="comment-body">{{ comment.text }}</textarea>
+                                        <p class="comment-body">{{ comment.text|safe }}</p>
                                     </div>
                                     <style>
                                         .comment img {

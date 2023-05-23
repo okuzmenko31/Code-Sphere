@@ -6,7 +6,7 @@ from allauth.socialaccount.views import SignupView as SocialSignupView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('mdeditor/', include('mdeditor.urls')),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
     path('accounts/', include('allauth.urls')),
     path('codesphere/user/', include('users.urls')),
     path('codesphere/welcome/', include('home.urls')),

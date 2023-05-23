@@ -1,6 +1,7 @@
 from django import forms
 from .models import Comment
-from mdeditor.fields import MDTextFormField
+from ckeditor.widgets import CKEditorWidget
+from ckeditor_uploader.widgets import CKEditorUploadingWidget
 
 
 class PostComment(forms.ModelForm):
@@ -8,7 +9,7 @@ class PostComment(forms.ModelForm):
         model = Comment
         fields = ('text',)
         widgets = {
-            'text': MDTextFormField(config_name='default')
+            'text': CKEditorUploadingWidget()
         }
         labels = {
             'text': 'Your comment'

@@ -2,7 +2,6 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
-import mdeditor.fields
 
 
 class Migration(migrations.Migration):
@@ -32,7 +31,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('title', models.CharField(max_length=500, verbose_name='Title of post')),
                 ('short_description', models.TextField(max_length=2000, verbose_name='Short description of post')),
-                ('text', mdeditor.fields.MDTextField(verbose_name='Text')),
+                ('text', models.TextField(verbose_name='Text')),
                 ('cover_photo', models.ImageField(upload_to='images/posts/', verbose_name='Cover of post')),
                 ('is_confirmed', models.BooleanField(default=False, verbose_name='Post confirmed')),
                 ('creator', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='posts', to='users.userprofile', verbose_name='Creator of post')),

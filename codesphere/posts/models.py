@@ -3,8 +3,8 @@ from django.db import models
 from django.urls import reverse
 from comments.models import Comment
 from tags.models import Tags
-from mdeditor.fields import MDTextField
 from users.models import UserProfile, User
+from django.utils import timezone
 
 
 class ViewersIPs(models.Model):
@@ -47,7 +47,7 @@ class Posts(models.Model):
                              verbose_name='Title of post')
     short_description = models.TextField(max_length=2000,
                                          verbose_name='Short description of post')
-    text = MDTextField(verbose_name='Text')
+    text = models.TextField(verbose_name='Text')
     cover_photo = models.ImageField(upload_to='images/posts/',
                                     verbose_name='Cover of post')
     tags = models.ManyToManyField(Tags,
@@ -58,6 +58,14 @@ class Posts(models.Model):
                                    related_name='posts')
     is_confirmed = models.BooleanField(default=False,
                                        verbose_name='Post confirmed')
+    created_at = models.DateTimeField(auto_now_add=True,
+                                      verbose_name='Created at',
+                                      blank=True,
+                                      null=True)
+    updated_at = models.DateTimeField(auto_now=True,
+                                      verbose_name='Updated at',
+                                      blank=True,
+                                      null=True)
 
     class Meta:
         verbose_name = 'post'
