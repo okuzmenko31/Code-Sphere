@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User, AuthToken
+from .models import User, AuthToken, FollowingCategory, Following
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
 
@@ -30,3 +30,13 @@ class UserAdmin(BaseUserAdmin):
 class UserTokenAdmin(admin.ModelAdmin):
     list_display = ['id', 'token_owner', 'token', 'created']
     list_display_links = ['id', 'token_owner', 'token']
+
+
+@admin.register(FollowingCategory)
+class FollowingCategoryAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Following)
+class FollowingAdmin(admin.ModelAdmin):
+    pass

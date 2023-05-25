@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate
+from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import generics, status
@@ -9,10 +10,11 @@ from .serializers import (RegistrationSerializer,
                           PasswordResetSerializer)
 from .permissions import IsNotAuthenticated
 from rest_framework.views import APIView
-from .models import User, AuthToken
+from .models import User, AuthToken, FollowingCategory, Following
 from .token import TokenTypes, AuthTokenMixin, get_token_data
 from django.contrib.auth import logout
 from rest_framework.authentication import TokenAuthentication
+from django.contrib.contenttypes.models import ContentType
 
 
 class UserRegistrationAPIView(AuthTokenMixin,
@@ -191,3 +193,28 @@ class PasswordResetAPIView(AuthTokenMixin,
         else:
             return Response({'error': token_data.error},
                             status=status.HTTP_400_BAD_REQUEST)
+
+
+class FollowAPIView(APIView):
+
+    def post(self, *args, **kwargs):
+        try:
+            following_category = FollowingCategory.objects.get(id=self.kwargs['category_id'])
+        except FollowingCategory.DoesNotExist:
+            return Response({'error': 'Following category does not exist!'},
+                            status=status.HTTP_400_BAD_REQUEST)
+        following_model = following_category.content_type.model_class()
+        try:
+            following_object = following_model.objects.get(id=self.kwargs['following_id'])
+        except ObjectDoesNotExist:
+            return Response({'error': 'Following object does not exist!'},
+                            status=status.HTTP_400_BAD_REQUEST)
+        if self.request.user.id == following_object.id:
+            return Response({'error': 'You cannot subscribe to yourself!'})
+        following, created = Following.objects.get_or_create(user=self.request.user,
+                                                             content_type=following_category.content_type,
+                                                             object_id=following_object.id)
+        if not created:
+            following.delete()
+
+        return Response({'success': 'Successfully followed!'})
