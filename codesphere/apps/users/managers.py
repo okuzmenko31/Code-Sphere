@@ -28,9 +28,8 @@ class UserManager(BaseUserManager):
         email = self.normalize_email(email)
         username = extra_fields.get('username')
         if not username or self.filter(username=username).exists():
-            username = self.generate_username(email)
+            extra_fields['username'] = self._generate_username(email)
         user = self.model(email=email,
-                          username=username,
                           is_active=True,
                           date_joined=now,
                           **extra_fields)

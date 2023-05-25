@@ -1,11 +1,13 @@
-from django.contrib.auth.base_user import AbstractBaseUser
+import os
+import binascii
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
 from django.utils.text import slugify
 from .services import social_media_json, settings_json, get_from_json
 from .managers import UserManager
 
 
-class User(AbstractBaseUser):
+class User(PermissionsMixin, AbstractBaseUser):
     email = models.EmailField(max_length=254,
                               unique=True,
                               db_index=True,
@@ -114,3 +116,48 @@ class UserProfile(models.Model):
         settings['theme'] = theme
         self.settings = settings
         self.save()
+
+
+class AuthToken(models.Model):
+    TOKEN_TYPES = (
+        ('su', 'SignUp token'),
+        ('ce', 'Change email token'),
+        ('pr', 'Password reset token')
+    )
+    token = models.CharField(unique=True,
+                             max_length=32,
+                             verbose_name='Token',
+                             blank=True,
+                             null=True)
+    token_type = models.CharField(max_length=2, choices=TOKEN_TYPES,
+                                  verbose_name='Token type',
+                                  blank=True,
+                                  null=True)
+    token_owner = models.EmailField(verbose_name='Token owner email',
+                                    blank=True,
+                                    null=True)
+    created = models.DateTimeField(auto_now_add=True,
+                                   verbose_name='Token creation date')
+    expired = models.BooleanField(default=False,
+                                  verbose_name='Token expired')
+
+    class Meta:
+        verbose_name = 'token'
+        verbose_name_plural = 'Tokens'
+
+    def __str__(self):
+        return f'{self.token}, {self.token_type}'
+
+    @classmethod
+    def generate_token(cls):
+        return binascii.hexlify(os.urandom(16)).decode()
+
+    def save(self, *args, **kwargs):
+        if self._state.adding and (not self.token or
+                                   AuthToken.objects.filter(token=self.token).exists()):
+            self.token = self.generate_token()
+        super().save(*args, **kwargs)
+
+    @classmethod
+    def get_token_from_str(cls, token_value: str, token_owner: str):
+        return cls.objects.get(token=token_value, token_owner=token_owner)
