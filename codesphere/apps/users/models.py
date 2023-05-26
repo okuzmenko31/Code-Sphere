@@ -206,6 +206,8 @@ class Following(models.Model):
     content_object = GenericForeignKey("content_type", "object_id")
     following_category = GenericRelation(FollowingCategory,
                                          on_delete=models.CASCADE)
+    # about GenericRelation:
+    # https://docs.djangoproject.com/en/4.2/ref/contrib/contenttypes/#django.contrib.contenttypes.fields.GenericRelation
 
     class Meta:
         verbose_name = 'following'
