@@ -8,7 +8,7 @@ class TagsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Tags
-        fields = ['id', 'name', 'image', 'followers_count']
+        fields = ['id', 'name', 'image', 'followers_count', 'slug']
 
     def get_followers_count(self, instance):
         return count_followers(instance)

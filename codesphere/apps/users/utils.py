@@ -45,19 +45,13 @@ class FollowingMixin(ABC):
             return FollowingData(msg='You cannot subscribe to yourself')
         return FollowingData(instance=following_object)
 
-    def follow(self, following_category, following_object):
+    def follow(self, following_object) -> FollowingData:
         request = self.get_request()
-        # following = Following.objects.get_or_create(user=request.user,
-        #                                                      content_object=following_object,
-        #                                                      object_id=following_object.id)
         if Following.objects.filter(user=request.user, object_id=following_object.id):
             Following.objects.get(user=request.user, object_id=following_object.id).delete()
             return FollowingData(msg='You successfully unfollowed!')
         following = Following(content_object=following_object, user=request.user)
         following.save()
-        # if not created:
-        #     following.delete()
-        #     return FollowingData(msg='You successfully unfollowed!')
         return FollowingData(msg='Successfully followed!')
 
 

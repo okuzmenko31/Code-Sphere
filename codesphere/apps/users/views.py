@@ -1,5 +1,4 @@
 from django.contrib.auth import authenticate
-from django.core.exceptions import ObjectDoesNotExist
 from django.core.handlers.wsgi import WSGIRequest
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -11,7 +10,7 @@ from .serializers import (RegistrationSerializer,
                           PasswordResetSerializer)
 from .permissions import IsNotAuthenticated
 from rest_framework.views import APIView
-from .models import User, AuthToken, FollowingCategory, Following
+from .models import User, AuthToken
 from .token import TokenTypes, AuthTokenMixin, get_token_data
 from django.contrib.auth import logout
 from rest_framework.authentication import TokenAuthentication
@@ -198,6 +197,8 @@ class PasswordResetAPIView(AuthTokenMixin,
 
 class FollowAPIView(FollowingMixin,
                     APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get_request(self) -> WSGIRequest:
         return self.request
@@ -210,5 +211,5 @@ class FollowAPIView(FollowingMixin,
                                                             self.kwargs['following_id'])
         if error:
             return Response({'error': error}, status=status.HTTP_400_BAD_REQUEST)
-        msg = self.follow(following_category, following_object).msg
+        msg = self.follow(following_object).msg
         return Response({'info': msg})

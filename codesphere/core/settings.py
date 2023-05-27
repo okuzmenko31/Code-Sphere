@@ -32,7 +32,8 @@ INSTALLED_APPS = [
 
     # applications
     'apps.users',
-    'apps.tags'
+    'apps.tags',
+    'apps.posts'
 ]
 
 MIDDLEWARE = [
