@@ -2,6 +2,7 @@ from typing import NamedTuple, Union, Optional
 from django.core.exceptions import ObjectDoesNotExist
 from abc import ABC, abstractmethod
 from django.core.handlers.wsgi import WSGIRequest
+from django.db.models import Count, Q
 from .models import Following, FollowingCategory, ContentType, User
 
 
@@ -46,10 +47,20 @@ class FollowingMixin(ABC):
 
     def follow(self, following_category, following_object):
         request = self.get_request()
-        following, created = Following.objects.get_or_create(user=request.user,
-                                                             content_type=following_category.content_type,
-                                                             object_id=following_object.id)
-        if not created:
-            following.delete()
+        # following = Following.objects.get_or_create(user=request.user,
+        #                                                      content_object=following_object,
+        #                                                      object_id=following_object.id)
+        if Following.objects.filter(user=request.user, object_id=following_object.id):
+            Following.objects.get(user=request.user, object_id=following_object.id).delete()
             return FollowingData(msg='You successfully unfollowed!')
+        following = Following(content_object=following_object, user=request.user)
+        following.save()
+        # if not created:
+        #     following.delete()
+        #     return FollowingData(msg='You successfully unfollowed!')
         return FollowingData(msg='Successfully followed!')
+
+
+def count_followers(instance):
+    followings_count = Following.objects.aggregate(count=Count('id', filter=Q(object_id=instance.id)))
+    return followings_count['count']

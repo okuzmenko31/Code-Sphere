@@ -200,12 +200,12 @@ class Following(models.Model):
                              verbose_name='User',
                              related_name='followings')
     content_type = models.ForeignKey(ContentType,
-                                     on_delete=models.CASCADE,
-                                     related_name='followers')
+                                     on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey("content_type", "object_id")
     following_category = GenericRelation(FollowingCategory,
                                          on_delete=models.CASCADE)
+
     # about GenericRelation:
     # https://docs.djangoproject.com/en/4.2/ref/contrib/contenttypes/#django.contrib.contenttypes.fields.GenericRelation
 

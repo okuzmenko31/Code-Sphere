@@ -12,3 +12,4 @@ celery-beat-schedule.db
 *.log
 logging
 codesphere/celerybeat-schedule
+media
