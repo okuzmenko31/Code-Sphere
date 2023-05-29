@@ -33,18 +33,21 @@ class PostLikes(models.Model):
         return f'User: {self.user}, Post: {self.post}'
 
 
+def post_image_upload_path(instance, filename):
+    return f'posts/{instance.id}/{filename}'
+
+
 class Posts(models.Model):
     creator = models.ForeignKey(User,
                                 on_delete=models.CASCADE,
                                 verbose_name='Creator of post',
                                 related_name='posts')
-
     title = models.CharField(max_length=500,
                              verbose_name='Title of post')
     short_description = models.TextField(max_length=2000,
                                          verbose_name='Short description of post')
     text = models.TextField(verbose_name='Text')
-    cover_photo = models.ImageField(upload_to='images/posts/',
+    cover_photo = models.ImageField(upload_to=post_image_upload_path,
                                     verbose_name='Cover of post')
     tags = models.ManyToManyField(Tags,
                                   verbose_name='Post tags',

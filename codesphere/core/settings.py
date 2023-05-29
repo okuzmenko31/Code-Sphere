@@ -112,11 +112,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR.parent / 'static'
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR.parent / 'media'
 
 # EMAIL SETTINGS
 
@@ -133,3 +128,27 @@ EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'users.User'
+
+DEFAULT_AUTHENTICATION_CLASSES = {
+    'rest_framework.authentication.TokenAuthentication',
+    'rest_framework.authentication.SessionAuthentication'
+}
+
+# AWS
+
+AWS_ACCESS_KEY_ID = os.getenv('ACCESS_KEY_ID', 'access_key')
+AWS_SECRET_ACCESS_KEY = os.getenv('SECRET_ACCESS_KEY', 'secret_access_key')
+AWS_STORAGE_BUCKET_NAME = os.getenv('STORAGE_BUCKET_NAME', 'bucket_name')
+AWS_S3_SIGNATURE_NAME = 's3v4',
+AWS_S3_REGION_NAME = os.getenv('S3_REGION_NAME', 'region')  # EU (London) eu-west-2 - we need 'eu-west-2' only.
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None
+AWS_S3_VERITY = True
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_LOCATION = 'media'
+
+STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR.parent / 'static'
+
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = BASE_DIR.parent / 'media'
