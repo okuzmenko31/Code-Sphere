@@ -78,6 +78,9 @@ class UserProfile(models.Model):
                                default=social_media_json)
     settings = models.JSONField(verbose_name='Settings',
                                 default=settings_json)
+    slug = models.SlugField(unique=True,
+                            blank=True,
+                            null=True)
 
     class Meta:
         verbose_name = 'profile'
@@ -85,6 +88,11 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return f'Profile: {self.user.username}'
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = self.user.slug
+        super().save(*args, **kwargs)
 
     def get_socials(self):
         return get_from_json(self.socials)

@@ -2,19 +2,20 @@ from django.contrib.auth import authenticate
 from django.core.handlers.wsgi import WSGIRequest
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework import generics, status
+from rest_framework import generics, status, mixins, viewsets
 from .serializers import (RegistrationSerializer,
                           LoginSerializer,
                           ChangeEmailSerializer,
                           SendPasswordResetMailSerializer,
-                          PasswordResetSerializer)
-from .permissions import IsNotAuthenticated
+                          PasswordResetSerializer,
+                          UserProfileSerializer)
+from .permissions import IsNotAuthenticated, IsOwnerOrReadOnly
 from rest_framework.views import APIView
-from .models import User, AuthToken
+from .models import User, AuthToken, UserProfile
 from .token import TokenTypes, AuthTokenMixin, get_token_data
 from django.contrib.auth import logout
 from rest_framework.authentication import TokenAuthentication
-from .utils import FollowingMixin
+from .utils import FollowingMixin, create_user_profile
 
 
 class UserRegistrationAPIView(AuthTokenMixin,
@@ -52,7 +53,8 @@ class ConfirmEmailAPIView(AuthTokenMixin,
             user.is_active = True
             user.save()
             token_data.token.delete()
-            return Response({'success': 'You successfully confirmed your email!'},
+            create_user_profile(user)
+            return Response({'success': 'You successfully registered and confirmed your email!'},
                             status=status.HTTP_200_OK)
         else:
             return Response({'error': token_data.error}, status=status.HTTP_400_BAD_REQUEST)
@@ -213,3 +215,21 @@ class FollowAPIView(FollowingMixin,
             return Response({'error': error}, status=status.HTTP_400_BAD_REQUEST)
         msg = self.follow(following_object).msg
         return Response({'info': msg})
+
+
+class UserProfileViewSet(mixins.RetrieveModelMixin,
+                         mixins.UpdateModelMixin,
+                         mixins.DestroyModelMixin,
+                         viewsets.GenericViewSet):
+    serializer_class = UserProfileSerializer
+    queryset = UserProfile.objects.all()
+    permission_classes = [IsOwnerOrReadOnly]
+    authentication_classes = [TokenAuthentication]
+    lookup_field = 'slug'
+    lookup_url_kwarg = 'user_slug'
+
+    def retrieve(self, request, *args, **kwargs):
+        response = super().retrieve(request, *args, **kwargs)
+        if not self.request.user.is_authenticated or self.get_object().user.id != self.request.user.id:
+            del response.data['settings']
+        return response

@@ -3,7 +3,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from abc import ABC, abstractmethod
 from django.core.handlers.wsgi import WSGIRequest
 from django.db.models import Count, Q
-from .models import Following, FollowingCategory, ContentType, User
+from .models import Following, FollowingCategory, ContentType, User, UserProfile
 
 
 class FollowingData(NamedTuple):
@@ -58,3 +58,8 @@ class FollowingMixin(ABC):
 def count_followers(instance):
     followings_count = Following.objects.aggregate(count=Count('id', filter=Q(object_id=instance.id)))
     return followings_count['count']
+
+
+def create_user_profile(user: User):
+    if user.is_active and not UserProfile.objects.filter(user_id=user.id).exists():
+        UserProfile.objects.create(user=user)

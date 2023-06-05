@@ -1,4 +1,6 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+
 from .views import (UserRegistrationAPIView,
                     ConfirmEmailAPIView,
                     LoginAPIView,
@@ -7,7 +9,11 @@ from .views import (UserRegistrationAPIView,
                     ChangeEmailConfirmAPIView,
                     SendPasswordResetAPIView,
                     PasswordResetAPIView,
-                    FollowAPIView)
+                    FollowAPIView,
+                    UserProfileViewSet)
+
+router = DefaultRouter()
+router.register(r'profile', viewset=UserProfileViewSet, basename='profile')
 
 urlpatterns = [
     path('registration/', UserRegistrationAPIView.as_view(), name='registration'),
@@ -20,5 +26,6 @@ urlpatterns = [
          name='change_email_confirm'),
     path('password_reset/', SendPasswordResetAPIView.as_view(), name='send_password_reset'),
     path('password_reset/<token>/<email>/', PasswordResetAPIView.as_view(), name='password_reset'),
-    path('follow/<int:category_id>/<int:following_id>/', FollowAPIView.as_view(), name='follow')
+    path('follow/<int:category_id>/<int:following_id>/', FollowAPIView.as_view(), name='follow'),
+    path('', include(router.urls))
 ]

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User, AuthToken, FollowingCategory, Following
+from .models import User, AuthToken, FollowingCategory, Following, UserProfile
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
 
@@ -39,4 +39,9 @@ class FollowingCategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Following)
 class FollowingAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(UserProfile)
+class UserProfileAdmin(admin.ModelAdmin):
     pass

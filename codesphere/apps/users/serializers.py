@@ -1,8 +1,9 @@
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
-from .models import User
+from .models import User, UserProfile
 from rest_framework.authtoken.models import Token
+from .utils import count_followers
 
 
 class RegistrationSerializer(serializers.Serializer):
@@ -105,3 +106,25 @@ class PasswordResetSerializer(serializers.Serializer):
         user.set_password(password)
         user.save()
         return attrs
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'email', 'full_name', 'date_joined', 'is_active')
+
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    user_username = serializers.SerializerMethodField(read_only=True)
+    followers_count = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = UserProfile
+        fields = ('id', 'user_username', 'avatar', 'bio',
+                  'location', 'socials', 'settings', 'followers_count')
+
+    def get_user_username(self, instance):
+        return instance.user.username
+
+    def get_followers_count(self, instance):
+        return count_followers(instance)
