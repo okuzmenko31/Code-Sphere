@@ -33,7 +33,8 @@ INSTALLED_APPS = [
     # applications
     'apps.users',
     'apps.tags',
-    'apps.posts'
+    'apps.posts',
+    'apps.followings'
 ]
 
 MIDDLEWARE = [

@@ -1,5 +1,4 @@
 from django.contrib.auth import authenticate
-from django.core.handlers.wsgi import WSGIRequest
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import generics, status, mixins, viewsets
@@ -15,7 +14,7 @@ from .models import User, AuthToken, UserProfile
 from .token import TokenTypes, AuthTokenMixin, get_token_data
 from django.contrib.auth import logout
 from rest_framework.authentication import TokenAuthentication
-from .utils import FollowingMixin, create_user_profile
+from .utils import create_user_profile
 
 
 class UserRegistrationAPIView(AuthTokenMixin,
@@ -195,26 +194,6 @@ class PasswordResetAPIView(AuthTokenMixin,
         else:
             return Response({'error': token_data.error},
                             status=status.HTTP_400_BAD_REQUEST)
-
-
-class FollowAPIView(FollowingMixin,
-                    APIView):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-
-    def get_request(self) -> WSGIRequest:
-        return self.request
-
-    def post(self, *args, **kwargs):
-        following_category, error = self.get_following_category(self.kwargs['category_id'])
-        if error:
-            return Response({'error': error}, status=status.HTTP_400_BAD_REQUEST)
-        following_object, error = self.get_following_object(following_category,
-                                                            self.kwargs['following_id'])
-        if error:
-            return Response({'error': error}, status=status.HTTP_400_BAD_REQUEST)
-        msg = self.follow(following_object).msg
-        return Response({'info': msg})
 
 
 class UserProfileViewSet(mixins.RetrieveModelMixin,

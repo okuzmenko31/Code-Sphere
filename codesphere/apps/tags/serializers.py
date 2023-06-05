@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import Tags
-from apps.users.utils import count_followers
+from apps.followings.utils import count_followers
 
 
 class TagsSerializer(serializers.ModelSerializer):

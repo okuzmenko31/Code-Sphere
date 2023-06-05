@@ -3,7 +3,7 @@ from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from .models import User, UserProfile
 from rest_framework.authtoken.models import Token
-from .utils import count_followers
+from apps.followings.utils import count_followers
 
 
 class RegistrationSerializer(serializers.Serializer):

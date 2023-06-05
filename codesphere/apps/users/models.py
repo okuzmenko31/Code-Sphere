@@ -1,8 +1,6 @@
 import os
 import binascii
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
-from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
-from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.utils.text import slugify
 from .services import social_media_json, settings_json, get_from_json
@@ -175,51 +173,3 @@ class AuthToken(models.Model):
     @classmethod
     def get_token_from_str(cls, token_value: str, token_owner: str):
         return cls.objects.get(token=token_value, token_owner=token_owner)
-
-
-class FollowingCategory(models.Model):
-    name = models.CharField(max_length=32,
-                            verbose_name='Following category')
-    content_type = models.ForeignKey(ContentType,
-                                     on_delete=models.CASCADE,
-                                     verbose_name='Following object')
-    object_id = models.PositiveIntegerField(blank=True,
-                                            null=True)
-    content_object = GenericForeignKey("content_type", "object_id")
-
-    class Meta:
-        verbose_name = 'following category'
-        verbose_name_plural = 'Following categories'
-
-    def __str__(self):
-        return f'Following category: {self.name}'
-
-    def save(self, *args, **kwargs):
-        if self._state.adding and not self.object_id:
-            # Automatically populate object_id based on the selected content_type
-            content_object_type = ContentType.objects.get_for_model(self.content_object)
-            self.object_id = content_object_type.pk
-        super().save(*args, **kwargs)
-
-
-class Following(models.Model):
-    user = models.ForeignKey(User,
-                             on_delete=models.CASCADE,
-                             verbose_name='User',
-                             related_name='followings')
-    content_type = models.ForeignKey(ContentType,
-                                     on_delete=models.CASCADE)
-    object_id = models.PositiveIntegerField()
-    content_object = GenericForeignKey("content_type", "object_id")
-    following_category = GenericRelation(FollowingCategory,
-                                         on_delete=models.CASCADE)
-
-    # about GenericRelation:
-    # https://docs.djangoproject.com/en/4.2/ref/contrib/contenttypes/#django.contrib.contenttypes.fields.GenericRelation
-
-    class Meta:
-        verbose_name = 'following'
-        verbose_name_plural = 'Followings'
-
-    def __str__(self):
-        return f'Follower: {self.user.username}'

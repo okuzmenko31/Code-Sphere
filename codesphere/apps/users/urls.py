@@ -9,7 +9,6 @@ from .views import (UserRegistrationAPIView,
                     ChangeEmailConfirmAPIView,
                     SendPasswordResetAPIView,
                     PasswordResetAPIView,
-                    FollowAPIView,
                     UserProfileViewSet)
 
 router = DefaultRouter()
@@ -26,6 +25,5 @@ urlpatterns = [
          name='change_email_confirm'),
     path('password_reset/', SendPasswordResetAPIView.as_view(), name='send_password_reset'),
     path('password_reset/<token>/<email>/', PasswordResetAPIView.as_view(), name='password_reset'),
-    path('follow/<int:category_id>/<int:following_id>/', FollowAPIView.as_view(), name='follow'),
     path('', include(router.urls))
 ]
