@@ -18,7 +18,7 @@ class FollowingMixin(ABC):
         raise NotImplementedError
 
     @classmethod
-    def get_following_category(cls, category_id):
+    def get_following_category(cls, category_id: int) -> FollowingData:
         try:
             following_category = FollowingCategory.objects.get(id=category_id)
         except FollowingCategory.DoesNotExist:
@@ -33,7 +33,7 @@ class FollowingMixin(ABC):
             return False
         return True
 
-    def get_following_object(self, category: FollowingCategory, following_id):
+    def get_following_object(self, category: FollowingCategory, following_id) -> FollowingData:
         following_category = category
         following_model = following_category.content_type.model_class()
         request = self.get_request()
@@ -47,7 +47,7 @@ class FollowingMixin(ABC):
 
     def follow(self, following_object) -> FollowingData:
         request = self.get_request()
-        if Following.objects.filter(user=request.user, object_id=following_object.id):
+        if Following.objects.filter(user=request.user, object_id=following_object.id).exists():
             Following.objects.get(user=request.user, object_id=following_object.id).delete()
             return FollowingData(msg='You successfully unfollowed!')
         following = Following(content_object=following_object, user=request.user)
