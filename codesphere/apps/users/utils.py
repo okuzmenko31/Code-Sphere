@@ -1,3 +1,5 @@
+from notifications.models import Notification
+
 from .models import User, UserProfile
 
 

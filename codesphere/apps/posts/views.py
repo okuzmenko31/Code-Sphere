@@ -7,19 +7,25 @@ from .models import Posts
 from .permissions import IsOwnerOrReadOnly
 from rest_framework.permissions import IsAdminUser
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
+from notifications.signals import notify
+from apps.followings.models import Following
+from django.urls import reverse
+from .utils import send_notifications_about_post
 
 
 class PostsAPIView(ListCreateAPIView):
     queryset = Posts.objects.all()
     serializer_class = PostsSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
+    authentication_classes = [TokenAuthentication]
 
     def get_queryset(self):
         return self.queryset.filter(is_confirmed=True).prefetch_related('tags')
 
     def perform_create(self, serializer):
-        if not self.request.user.is_staff:
-            serializer.save(is_confirmed=False)
+        post = serializer.save(is_confirmed=False,
+                               creator=self.request.user)
+        send_notifications_about_post(post)
 
 
 class PostDetailAPIView(RetrieveUpdateDestroyAPIView):

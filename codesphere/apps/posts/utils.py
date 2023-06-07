@@ -1,3 +1,10 @@
+from notifications.signals import notify
+from .models import Posts
+from django.urls import reverse
+
+from apps.followings.models import Following
+
+
 class UnconfirmedPostsSerializerMixin:
     """
     Mixin which allows staff users to edit
@@ -16,3 +23,22 @@ class UnconfirmedPostsSerializerMixin:
             self.Meta.read_only_fields = read_only_fields
 
             self.Meta.fields.extend(self.staff_fields)
+
+
+def send_notifications_about_post(post: Posts):
+    """
+    Sends notifications to followers of post
+    creator.
+    :param post: Post.
+    """
+    post_url = reverse('post_detail', kwargs={'post_id': post.id})
+    post_creator_followers = Following.objects.filter(object_id=post.creator.id)
+    for follower in post_creator_followers:
+        notify.send(sender=post.creator, recipient=follower.user,
+                    verb=f'{post.creator} made a new post, check it by this link: {post_url}')
+
+
+def post_notification_message(post: Posts):
+    post_url = reverse('post_detail', kwargs={'post_id': post.id})
+    message = f'{post.creator.username} made a new post , check it by this link: \n{post_url}'
+    return message
