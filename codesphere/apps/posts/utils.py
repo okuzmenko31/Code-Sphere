@@ -1,8 +1,8 @@
 from notifications.signals import notify
 from .models import Posts
 from django.urls import reverse
-
 from apps.followings.models import Following
+from apps.notifications.utils import NotificationsMixin
 
 
 class UnconfirmedPostsSerializerMixin:
@@ -25,20 +25,18 @@ class UnconfirmedPostsSerializerMixin:
             self.Meta.fields.extend(self.staff_fields)
 
 
-def send_notifications_about_post(post: Posts):
-    """
-    Sends notifications to followers of post
-    creator.
-    :param post: Post.
-    """
-    post_url = reverse('post_detail', kwargs={'post_id': post.id})
-    post_creator_followers = Following.objects.filter(object_id=post.creator.id)
-    for follower in post_creator_followers:
-        notify.send(sender=post.creator, recipient=follower.user,
-                    verb=f'{post.creator} made a new post, check it by this link: {post_url}')
+class PostMixin:
 
+    @staticmethod
+    def get_post_notification_message(post: Posts):
+        post_url = reverse('post_detail', kwargs={'post_id': post.id})
+        message = f'{post.creator.username} made a new post , check it by this link: \n{post_url}'
+        return message
 
-def post_notification_message(post: Posts):
-    post_url = reverse('post_detail', kwargs={'post_id': post.id})
-    message = f'{post.creator.username} made a new post , check it by this link: \n{post_url}'
-    return message
+    @staticmethod
+    def get_post_creator_followers(post: Posts) -> list[Following]:
+        followers_list = []
+        post_creator_followers = Following.objects.filter(object_id=post.creator.id)
+        for follower in post_creator_followers:
+            followers_list.append(follower.user)
+        return followers_list

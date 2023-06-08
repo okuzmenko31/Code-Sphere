@@ -1,7 +1,5 @@
-from apps.followings.models import Following
-from django.urls import reverse
 from notifications.signals import notify
-from abc import ABC, abstractmethod
+from abc import ABC
 
 
 class NotificationMessages(ABC):
@@ -12,14 +10,14 @@ class NotificationMessages(ABC):
         return self._notification_message
 
     @notification_message.setter
-    @abstractmethod
-    def notification_message(self, message: str, *args, **kwargs) -> str:
+    def notification_message(self, message: str):
         """
-        This method must return notification message.
+        This method must return notification message and
+        set _notification_message
 
         :return: str message.
         """
-        raise NotImplementedError
+        self._notification_message = message
 
 
 class NotificationsMixin(NotificationMessages):
