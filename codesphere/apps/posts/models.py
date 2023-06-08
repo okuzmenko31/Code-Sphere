@@ -85,8 +85,10 @@ class Posts(models.Model):
     def save(self, *args, **kwargs):
         if self.is_confirmed and not self.notifications_sent:
             notification_mixin = NotificationsMixin()
+            notification_mixin.use_description = True
             message = self.get_notification_message
             notification_mixin.notification_message = message
+            notification_mixin.description_message = notification_mixin.addition_message
             creator_followers = self.get_creator_followers
             notification_mixin.send_mass_notifications(sender=self.creator,
                                                        recipients=creator_followers)

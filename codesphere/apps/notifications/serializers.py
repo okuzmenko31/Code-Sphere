@@ -6,6 +6,7 @@ class NotificationSerializer(serializers.Serializer):
     sender_username = serializers.SerializerMethodField(read_only=True)
     unread = serializers.BooleanField(read_only=True, required=False)
     message = serializers.SerializerMethodField(read_only=True)
+    description = serializers.SerializerMethodField(read_only=True)
     date = serializers.SerializerMethodField(read_only=True)
 
     @staticmethod
@@ -15,6 +16,10 @@ class NotificationSerializer(serializers.Serializer):
     @staticmethod
     def get_message(instance):
         return instance.verb
+
+    @staticmethod
+    def get_description(instance):
+        return instance.description
 
     @staticmethod
     def get_date(instance):

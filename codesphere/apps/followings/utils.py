@@ -4,6 +4,7 @@ from abc import ABC, abstractmethod
 from django.core.handlers.wsgi import WSGIRequest
 from django.db.models import Count, Q
 from .models import Following, FollowingCategory, ContentType, User
+from apps.notifications.utils import NotificationsMixin
 
 
 class FollowingData(NamedTuple):
@@ -11,11 +12,16 @@ class FollowingData(NamedTuple):
     msg: Optional[str] = None
 
 
-class FollowingMixin(ABC):
+class FollowingMixin(NotificationsMixin,
+                     ABC):
 
     @abstractmethod
     def get_request(self) -> WSGIRequest:
         raise NotImplementedError
+
+    @staticmethod
+    def following_notification_message(follower: User) -> str:
+        return f'{follower.username} subscribed to you!'
 
     @classmethod
     def get_following_category(cls, category_id: int) -> FollowingData:
@@ -52,6 +58,8 @@ class FollowingMixin(ABC):
             return FollowingData(msg='You successfully unfollowed!')
         following = Following(content_object=following_object, user=request.user)
         following.save()
+        self.notification_message = self.following_notification_message(follower=request.user)
+        self.send_notification(sender=request.user, recipient=following_object)
         return FollowingData(msg='Successfully followed!')
 
 
