@@ -7,12 +7,10 @@ from .models import Posts
 from .permissions import IsOwnerOrReadOnly
 from rest_framework.permissions import IsAdminUser
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
-from .utils import PostMixin
 from apps.notifications.utils import NotificationsMixin
 
 
-class PostsAPIView(PostMixin,
-                   NotificationsMixin,
+class PostsAPIView(NotificationsMixin,
                    ListCreateAPIView):
     queryset = Posts.objects.all()
     serializer_class = PostsSerializer
@@ -23,13 +21,8 @@ class PostsAPIView(PostMixin,
         return self.queryset.filter(is_confirmed=True).prefetch_related('tags')
 
     def perform_create(self, serializer):
-        post = serializer.save(is_confirmed=False,
-                               creator=self.request.user)
-        message = self.get_post_notification_message(post)
-        self.notification_message = message
-        creator_followers = self.get_post_creator_followers(post)
-        self.send_mass_notifications(sender=post.creator,
-                                     recipients=creator_followers)
+        serializer.save(is_confirmed=False,
+                        creator=self.request.user)
 
 
 class PostDetailAPIView(RetrieveUpdateDestroyAPIView):

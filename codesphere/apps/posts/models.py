@@ -1,6 +1,10 @@
 from django.db import models
+from django.urls import reverse
+
+from apps.notifications.utils import NotificationsMixin
 from apps.tags.models import Tags
 from apps.users.models import User
+from .utils import get_post_creator_followers
 
 
 class ViewersIPs(models.Model):
@@ -57,6 +61,8 @@ class Posts(models.Model):
                                    related_name='posts')
     is_confirmed = models.BooleanField(default=False,
                                        verbose_name='Post confirmed')
+    notifications_sent = models.BooleanField(default=False,
+                                             verbose_name='Notifications about post was sent')
 
     class Meta:
         verbose_name = 'post'
@@ -65,6 +71,27 @@ class Posts(models.Model):
 
     def __str__(self):
         return f'Post # {self.id}, creator: {self.creator}'
+
+    @property
+    def get_notification_message(self) -> str:
+        post_url = reverse('post_detail', kwargs={'post_id': self.id})
+        message = f'{self.creator.username} made a new post , check it by this link: {post_url}'
+        return message
+
+    @property
+    def get_creator_followers(self):
+        return get_post_creator_followers(self)
+
+    def save(self, *args, **kwargs):
+        if self.is_confirmed and not self.notifications_sent:
+            notification_mixin = NotificationsMixin()
+            message = self.get_notification_message
+            notification_mixin.notification_message = message
+            creator_followers = self.get_creator_followers
+            notification_mixin.send_mass_notifications(sender=self.creator,
+                                                       recipients=creator_followers)
+            self.notifications_sent = True
+        super().save(*args, **kwargs)
 
     @property
     def post_views(self):
