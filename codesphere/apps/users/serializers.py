@@ -129,22 +129,3 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
     def get_followers_count(self, instance):
         return count_followers(instance)
-
-
-class NotificationSerializer(serializers.Serializer):
-    sender_username = serializers.SerializerMethodField(read_only=True)
-    unread = serializers.BooleanField(read_only=True, required=False)
-    message = serializers.SerializerMethodField(read_only=True)
-    date = serializers.SerializerMethodField(read_only=True)
-
-    @staticmethod
-    def get_sender_username(instance):
-        return instance.actor.username
-
-    @staticmethod
-    def get_message(instance):
-        return instance.verb
-
-    @staticmethod
-    def get_date(instance):
-        return timesince(instance.timestamp) + ' ago'

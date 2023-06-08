@@ -1,5 +1,4 @@
 from django.contrib.auth import authenticate
-from notifications.models import Notification
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import generics, status, mixins, viewsets
@@ -8,14 +7,13 @@ from .serializers import (RegistrationSerializer,
                           ChangeEmailSerializer,
                           SendPasswordResetMailSerializer,
                           PasswordResetSerializer,
-                          UserProfileSerializer,
-                          NotificationSerializer)
+                          UserProfileSerializer)
 from .permissions import IsNotAuthenticated, IsOwnerOrReadOnly
 from rest_framework.views import APIView
 from .models import User, AuthToken, UserProfile
 from .token import TokenTypes, AuthTokenMixin, get_token_data
 from django.contrib.auth import logout
-from rest_framework.authentication import TokenAuthentication, SessionAuthentication
+from rest_framework.authentication import TokenAuthentication
 from .utils import create_user_profile
 
 
@@ -213,25 +211,4 @@ class UserProfileViewSet(mixins.RetrieveModelMixin,
         response = super().retrieve(request, *args, **kwargs)
         if not self.request.user.is_authenticated or self.get_object().user.id != self.request.user.id:
             del response.data['settings']
-        return response
-
-
-class NotificationsAPIView(generics.ListAPIView):
-    serializer_class = NotificationSerializer
-    queryset = Notification.objects.all()
-    authentication_classes = [SessionAuthentication]
-
-    def get_queryset(self):
-        return self.queryset.filter(recipient=self.request.user)
-
-
-class UnreadNotificationsAPIView(NotificationsAPIView):
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        return queryset.filter(unread=True)
-
-    def list(self, request, *args, **kwargs):
-        response = super().list(request, *args, **kwargs)
-        self.queryset.update(unread=False)
         return response

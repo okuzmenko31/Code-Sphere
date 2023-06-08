@@ -9,9 +9,7 @@ from .views import (UserRegistrationAPIView,
                     ChangeEmailConfirmAPIView,
                     SendPasswordResetAPIView,
                     PasswordResetAPIView,
-                    UserProfileViewSet,
-                    NotificationsAPIView,
-                    UnreadNotificationsAPIView)
+                    UserProfileViewSet)
 
 router = DefaultRouter()
 router.register(r'profile', viewset=UserProfileViewSet, basename='profile')
@@ -27,7 +25,5 @@ urlpatterns = [
          name='change_email_confirm'),
     path('password_reset/', SendPasswordResetAPIView.as_view(), name='send_password_reset'),
     path('password_reset/<token>/<email>/', PasswordResetAPIView.as_view(), name='password_reset'),
-    path('', include(router.urls)),
-    path('notifications/all/', NotificationsAPIView.as_view(), name='user_notifications'),
-    path('notifications/unread/', UnreadNotificationsAPIView.as_view(), name='user_unread_notifications'),
+    path('', include(router.urls))
 ]
