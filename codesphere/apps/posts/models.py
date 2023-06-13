@@ -1,10 +1,9 @@
 from django.db import models
 from django.urls import reverse
-
+from apps.followings.utils import get_post_creator_followers
 from apps.notifications.utils import NotificationsMixin
 from apps.tags.models import Tags
 from apps.users.models import User
-from .utils import get_post_creator_followers
 
 
 class ViewersIPs(models.Model):

@@ -66,3 +66,11 @@ class FollowingMixin(NotificationsMixin,
 def count_followers(instance):
     followings_count = Following.objects.aggregate(count=Count('id', filter=Q(object_id=instance.id)))
     return followings_count['count']
+
+
+def get_post_creator_followers(post) -> list[Following]:
+    followers_list = []
+    post_creator_followers = Following.objects.filter(object_id=post.creator.id)
+    for follower in post_creator_followers:
+        followers_list.append(follower.user)
+    return followers_list

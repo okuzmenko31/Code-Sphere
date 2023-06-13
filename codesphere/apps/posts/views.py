@@ -8,6 +8,7 @@ from .permissions import IsOwnerOrReadOnly
 from rest_framework.permissions import IsAdminUser
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 from apps.notifications.utils import NotificationsMixin
+from .utils import ViewsMixin
 
 
 class PostsAPIView(NotificationsMixin,
@@ -25,7 +26,8 @@ class PostsAPIView(NotificationsMixin,
                         creator=self.request.user)
 
 
-class PostDetailAPIView(RetrieveUpdateDestroyAPIView):
+class PostDetailAPIView(ViewsMixin,
+                        RetrieveUpdateDestroyAPIView):
     queryset = Posts.objects.all()
     serializer_class = PostsSerializer
     permission_classes = [IsOwnerOrReadOnly]
