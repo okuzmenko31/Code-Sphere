@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.utils import timezone
 from apps.followings.utils import get_post_creator_followers
 from apps.notifications.utils import NotificationsMixin
 from apps.tags.models import Tags
@@ -62,6 +63,8 @@ class Posts(models.Model):
                                        verbose_name='Post confirmed')
     notifications_sent = models.BooleanField(default=False,
                                              verbose_name='Notifications about post was sent')
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name = 'post'
@@ -82,6 +85,7 @@ class Posts(models.Model):
         return get_post_creator_followers(self)
 
     def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
         if self.is_confirmed and not self.notifications_sent:
             notification_mixin = NotificationsMixin()
             notification_mixin.use_description = True
@@ -92,7 +96,6 @@ class Posts(models.Model):
             notification_mixin.send_mass_notifications(sender=self.creator,
                                                        recipients=creator_followers)
             self.notifications_sent = True
-        super().save(*args, **kwargs)
 
     @property
     def post_views(self):
