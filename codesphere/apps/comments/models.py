@@ -5,10 +5,13 @@ from apps.users.models import User
 
 
 class Comments(models.Model):
-    user = models.ForeignKey(User,
-                             on_delete=models.CASCADE,
-                             verbose_name='User',
-                             related_name='comments')
+    INSTANCES_TYPES = (
+        ('post', 'post'),
+    )
+    creator = models.ForeignKey(User,
+                                on_delete=models.CASCADE,
+                                verbose_name='User',
+                                related_name='comments')
     parent = models.ForeignKey('self',
                                on_delete=models.CASCADE,
                                verbose_name='Parent',
@@ -16,6 +19,10 @@ class Comments(models.Model):
                                null=True)
     text = models.TextField(max_length=10000,
                             verbose_name='Comment text')
+    instance_type = models.CharField(max_length=32,
+                                     verbose_name='Instance type',
+                                     choices=INSTANCES_TYPES,
+                                     blank=True)
     content_type = models.ForeignKey(ContentType,
                                      on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()

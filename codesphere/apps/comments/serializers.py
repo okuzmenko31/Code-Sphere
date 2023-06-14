@@ -4,23 +4,29 @@ from django.utils.timesince import timesince
 
 
 class CommentsSerializer(serializers.ModelSerializer):
-    user_username = serializers.SerializerMethodField(read_only=True, required=False)
-    created_timesince = serializers.SerializerMethodField(read_only=True, required=False)
-    comment_instance_str = serializers.SerializerMethodField(read_only=True, required=False)
-    comment_instance_id = serializers.SerializerMethodField(read_only=True, required=False)
+    user_username = serializers.SerializerMethodField(read_only=True,
+                                                      required=False)
+    created_timesince = serializers.SerializerMethodField(read_only=True,
+                                                          required=False)
+    comment_instance_str = serializers.SerializerMethodField(read_only=True,
+                                                             required=False)
+    comment_instance_id = serializers.SerializerMethodField(read_only=True,
+                                                            required=False)
 
     class Meta:
         model = Comments
         fields = ['id',
                   'user_username',
                   'created_timesince',
+                  'instance_type',
                   'text',
                   'comment_instance_str',
                   'comment_instance_id']
+        read_only_fields = ['instance_type']
 
     @classmethod
     def get_user_username(cls, instance):
-        return instance.user.username
+        return instance.creator.username
 
     @classmethod
     def get_created_timesince(cls, instance):

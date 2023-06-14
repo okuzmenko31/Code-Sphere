@@ -5,7 +5,7 @@ from apps.posts.models import Posts
 from .models import Comments
 
 
-class CommentsInstances(str, Enum):
+class CommentsInstancesTypes(str, Enum):
     """
     All available instances for which user
     can add comment.
@@ -22,11 +22,11 @@ class CommentInstancesMixin:
     _instance = None
 
     @staticmethod
-    def _get_instance_model(instance_type: CommentsInstances):
-        if instance_type == CommentsInstances.post:
+    def _get_instance_model(instance_type: CommentsInstancesTypes):
+        if instance_type == CommentsInstancesTypes.post:
             return Posts
 
-    def get_instance_by_id(self, instance_type: CommentsInstances,
+    def get_instance_by_id(self, instance_type: CommentsInstancesTypes,
                            instance_id) -> CommentData:
         instance_model = self._get_instance_model(instance_type)
         try:
@@ -38,7 +38,7 @@ class CommentInstancesMixin:
     @property
     def allowed_instances_types(self) -> list:
         instances_lst = []
-        for instance in CommentsInstances:
+        for instance in CommentsInstancesTypes:
             instances_lst.append(instance.value)
         return instances_lst
 
@@ -55,10 +55,15 @@ class CommentInstancesMixin:
 class CommentsMixin(CommentInstancesMixin):
 
     @staticmethod
-    def get_comments(instance_id: int) -> Comments:
-        return Comments.objects.filter(object_id=instance_id)
+    def get_comment(comment_id: int) -> Comments:
+        return Comments.objects.filter(id=comment_id)
 
-    def add_comment(self, instance_type: CommentsInstances, instance_id, data):
+    @staticmethod
+    def comments_by_instance_type(instance_type: CommentsInstancesTypes, instance_id: int):
+        return Comments.objects.filter(instance_type=instance_type,
+                                       object_id=instance_id)
+
+    def add_comment(self, instance_type: CommentsInstancesTypes, instance_id, data):
         instance = self.get_instance_by_id(instance_type=instance_type,
                                            instance_id=instance_id)
         if instance is not None:

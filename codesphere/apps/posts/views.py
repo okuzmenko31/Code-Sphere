@@ -4,7 +4,7 @@ from rest_framework.generics import (ListCreateAPIView,
 from .serializers import PostsSerializer, UnconfirmedPostsSerializer
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from .models import Posts
-from .permissions import IsOwnerOrReadOnly
+from apps.global_permissions import IsOwnerOrReadOnly
 from rest_framework.permissions import IsAdminUser
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 from apps.notifications.utils import NotificationsMixin
@@ -31,6 +31,7 @@ class PostDetailAPIView(ViewsMixin,
     queryset = Posts.objects.all()
     serializer_class = PostsSerializer
     permission_classes = [IsOwnerOrReadOnly]
+    authentication_classes = [TokenAuthentication]
     lookup_url_kwarg = 'post_id'
 
 
