@@ -1,4 +1,6 @@
 from django.contrib.auth import authenticate
+from django.shortcuts import redirect
+from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import generics, status, mixins, viewsets
@@ -212,3 +214,21 @@ class UserProfileViewSet(mixins.RetrieveModelMixin,
         if not self.request.user.is_authenticated or self.get_object().user.id != self.request.user.id:
             del response.data['settings']
         return response
+
+
+class UserProfileForUserAPIView(generics.RetrieveUpdateDestroyAPIView):
+    """
+    APIView which returns user's profile if
+    user is authenticated. User can access to
+    his profile without ulr kwargs and with url
+    'api/v1/users/profile/'.
+    """
+    serializer_class = UserProfileSerializer
+    queryset = UserProfile.objects.all()
+    permission_classes = [IsOwnerOrReadOnly]
+    authentication_classes = [TokenAuthentication]
+    lookup_field = None
+
+    def get_object(self):
+        profile = get_object_or_404(UserProfile, user=self.request.user)
+        return profile

@@ -9,10 +9,11 @@ from .views import (UserRegistrationAPIView,
                     ChangeEmailConfirmAPIView,
                     SendPasswordResetAPIView,
                     PasswordResetAPIView,
-                    UserProfileViewSet)
+                    UserProfileViewSet,
+                    UserProfileForUserAPIView)
 
 router = DefaultRouter()
-router.register(r'profile', viewset=UserProfileViewSet, basename='profile')
+router.register(r'profiles', viewset=UserProfileViewSet, basename='profiles')
 
 urlpatterns = [
     path('registration/', UserRegistrationAPIView.as_view(), name='registration'),
@@ -25,5 +26,6 @@ urlpatterns = [
          name='change_email_confirm'),
     path('password_reset/', SendPasswordResetAPIView.as_view(), name='send_password_reset'),
     path('password_reset/<token>/<email>/', PasswordResetAPIView.as_view(), name='password_reset'),
+    path('profile/', UserProfileForUserAPIView.as_view(), name='profile'),
     path('', include(router.urls))
 ]
