@@ -1,8 +1,8 @@
 from django.contrib import admin
-from .models import Comments
+from .models import Likes
 
 
-@admin.register(Comments)
-class CommentsAdmin(admin.ModelAdmin):
+@admin.register(Likes)
+class LikesAdmin(admin.ModelAdmin):
     list_display = ['id', 'creator', 'instance_type']
     list_display_links = ['id', 'instance_type']

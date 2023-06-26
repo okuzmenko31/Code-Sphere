@@ -10,5 +10,6 @@ class TagsSerializer(serializers.ModelSerializer):
         model = Tags
         fields = ['id', 'name', 'image', 'followers_count', 'slug']
 
-    def get_followers_count(self, instance):
+    @classmethod
+    def get_followers_count(cls, instance):
         return count_followers(instance)

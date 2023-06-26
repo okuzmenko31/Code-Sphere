@@ -6,5 +6,6 @@ urlpatterns = [
     path('posts/', include('apps.posts.urls')),
     path('followings/', include('apps.followings.urls')),
     path('notifications/', include('apps.notifications.urls')),
-    path('comments/', include('apps.comments.urls'))
+    path('comments/', include('apps.comments.urls')),
+    path('likes/', include('apps.likes.urls'))
 ]

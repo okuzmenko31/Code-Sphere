@@ -1,6 +1,5 @@
 from django.db import models
 from django.urls import reverse
-from django.utils import timezone
 from apps.followings.utils import get_post_creator_followers
 from apps.notifications.utils import NotificationsMixin
 from apps.tags.models import Tags
@@ -19,26 +18,8 @@ class ViewersIPs(models.Model):
         return f'Viewer IP: {self.ip}'
 
 
-class PostLikes(models.Model):
-    user = models.ForeignKey(User,
-                             on_delete=models.CASCADE,
-                             verbose_name='User',
-                             related_name='post_likes')
-    post = models.ForeignKey('Posts',
-                             on_delete=models.CASCADE,
-                             verbose_name='Post',
-                             related_name='post_likes')
-
-    class Meta:
-        verbose_name = 'like'
-        verbose_name_plural = 'Likes'
-
-    def __str__(self):
-        return f'User: {self.user}, Post: {self.post}'
-
-
 def post_image_upload_path(instance, filename):
-    return f'posts/{instance.id}/{filename}'
+    return f'posts/{filename}'
 
 
 class Posts(models.Model):
