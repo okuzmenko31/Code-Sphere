@@ -1,5 +1,5 @@
-from apps.followings.models import Following
-from .models import ViewersIPs
+from .models import ViewersIPs, Posts
+from apps.likes.utils import get_user_instance_likes_ids
 
 
 class UnconfirmedPostsSerializerMixin:
@@ -50,3 +50,20 @@ class ViewsMixin:
     def retrieve(self, request, *args, **kwargs):
         self.check_or_add_ip(request=request, post=self.get_object())
         return super().retrieve(request, *args, **kwargs)
+
+
+def get_user_liked_posts(user):
+    posts_ids = get_user_instance_likes_ids(user,
+                                            instance_type='post')
+    posts = Posts.objects.filter(id__in=posts_ids)
+    return posts
+
+
+def get_best_posts():
+    posts = Posts.objects.filter(is_confirmed=True)
+    best_posts_ids = []
+    for post in posts:
+        if post.post_views > 1:
+            best_posts_ids.append(post.id)
+    result = best_posts_ids[:10]
+    return result

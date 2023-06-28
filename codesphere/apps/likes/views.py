@@ -17,7 +17,7 @@ class LikesListCreateAPIView(ContentTypeInstanceCreateAPIView):
         if check_exist_like(instance_type=self.kwargs['instance_value'],
                             user=self.request.user,
                             instance_id=self.kwargs['instance_id']):
-            return Response({'success': 'You successfully unfollowed!'})
+            return Response({'success': 'You successfully removed your like!'})
         response = super().create(request, *args, **kwargs)
         return response
 

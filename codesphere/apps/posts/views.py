@@ -8,7 +8,7 @@ from apps.global_permissions import IsOwnerOrReadOnly
 from rest_framework.permissions import IsAdminUser
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 from apps.notifications.utils import NotificationsMixin
-from .utils import ViewsMixin
+from .utils import ViewsMixin, get_user_liked_posts, get_best_posts
 
 
 class PostsAPIView(NotificationsMixin,
@@ -55,3 +55,21 @@ class UnconfirmedPostsDetailAPIView(RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAdminUser]
     authentication_classes = [TokenAuthentication, SessionAuthentication]
     lookup_url_kwarg = 'post_id'
+
+
+class LikedPostsListAPIView(ListAPIView):
+    queryset = Posts.objects.all()
+    serializer_class = PostsSerializer
+    permission_classes = [IsAdminUser]
+    authentication_classes = [TokenAuthentication]
+
+    def get_queryset(self):
+        return get_user_liked_posts(self.request.user)
+
+
+class BestPostsListAPIView(ListAPIView):
+    queryset = Posts.objects.all()
+    serializer_class = PostsSerializer
+
+    def get_queryset(self):
+        return get_best_posts()

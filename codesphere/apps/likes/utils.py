@@ -21,3 +21,10 @@ def count_likes(instance_type,
     return count_content_type_instance_quantity(model=Likes,
                                                 instance_type=instance_type,
                                                 instance_id=instance_id)
+
+
+def get_user_instance_likes_ids(user,
+                                instance_type):
+    ids = Likes.objects.filter(creator=user,
+                               instance_type=instance_type).values_list('object_id')
+    return ids

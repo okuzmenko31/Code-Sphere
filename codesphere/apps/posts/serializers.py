@@ -11,6 +11,8 @@ from apps.tags.serializers import TagsSerializer
 class PostsSerializer(serializers.ModelSerializer):
     creator = serializers.SerializerMethodField(read_only=True)
     post_comment_url = serializers.SerializerMethodField(read_only=True)
+    post_likes_url = serializers.SerializerMethodField(read_only=True,
+                                                       required=False)
     comments_count = serializers.SerializerMethodField(read_only=True,
                                                        required=False)
     likes_count = serializers.SerializerMethodField(read_only=True,
@@ -21,16 +23,23 @@ class PostsSerializer(serializers.ModelSerializer):
         model = Posts
         fields = ['id', 'creator', 'title', 'short_description',
                   'cover_photo', 'tags', 'post_views', 'text',
-                  'post_comment_url', 'comments_count', 'likes_count']
+                  'post_comment_url', 'post_likes_url',
+                  'comments_count', 'likes_count']
         read_only_fields = ['creator']
 
-    def get_creator(self, instance):
+    @classmethod
+    def get_creator(cls, instance):
         return instance.creator.username
 
     @classmethod
     def get_post_comment_url(cls, instance):
         return reverse('comments_list_create', kwargs={'instance_value': InstancesTypes.post.value,
                                                        'instance_id': instance.id})
+
+    @classmethod
+    def get_post_likes_url(cls, instance):
+        return reverse('likes_list_create', kwargs={'instance_value': InstancesTypes.post.value,
+                                                    'instance_id': instance.id})
 
     @classmethod
     def get_comments_count(cls, instance):
